@@ -3,23 +3,29 @@ import 'package:flutter_svg/svg.dart';
 
 class SecondaryButton extends StatefulWidget {
   final VoidCallback onTap;
-  final String text, icons;
+  final String? text, icons;
   final double? width;
   final double? height;
   final double? borderRadius;
   final double? fontSize;
   final Color? textColor, bgColor;
+  final double? iconWidth;
+  final double? iconHeight;
+  final Color? borderColor;
   const SecondaryButton(
       {super.key,
       required this.onTap,
-      required this.text,
+      this.text,
       this.width,
       this.height,
-      required this.icons,
+      this.icons,
       this.borderRadius,
       this.fontSize,
       this.textColor,
-      this.bgColor});
+      this.bgColor,
+      this.iconWidth,
+      this.iconHeight,
+      this.borderColor});
 
   @override
   State<SecondaryButton> createState() => _SecondaryButtonState();
@@ -66,50 +72,31 @@ class _SecondaryButtonState extends State<SecondaryButton>
         ),
         child: Card(
           elevation: 5,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100),
-          ),
           child: Container(
             height: widget.height ?? 55,
             width: widget.width ?? double.maxFinite,
             decoration: BoxDecoration(
               color: widget.bgColor,
+              border: Border.all(color: widget.borderColor ?? Colors.transparent),
               borderRadius: BorderRadius.circular(widget.borderRadius!),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // SizedBox(width: 15.w),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: SvgPicture.asset(
-                    widget.icons,
-                    width: 20,
-                    height: 20,
-                  ),
+                SvgPicture.asset(
+                  widget.icons ?? "",
+                  width: widget.iconWidth,
+                  height: widget.iconHeight,
                 ),
-                const Spacer(),
-                Center(
-                  child: Text(
-                    widget.text,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        color: widget.textColor,
-                        fontSize: widget.fontSize,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Inter'),
-                  ),
+                Text(
+                  widget.text ?? "",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: widget.textColor,
+                      fontSize: widget.fontSize,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Inter'),
                 ),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: SvgPicture.asset(
-                    widget.icons,
-                    color: Colors.transparent,
-                    width: 20,
-                    height: 20,
-                  ),
-                )
               ],
             ),
           ),

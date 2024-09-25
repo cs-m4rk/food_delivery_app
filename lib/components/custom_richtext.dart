@@ -5,16 +5,16 @@ class CustomRichText extends StatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
-    required this.onTab,
+    required this.onTap,
     required this.subtitleTextStyle,
   });
   final String title, subtitle;
   final TextStyle subtitleTextStyle;
-  final VoidCallback onTab;
+  final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTab,
+      onTap: onTap,
       child: RichText(
         text: TextSpan(
           text: title,
