@@ -1,151 +1,148 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/animations/fade_animation.dart';
 import 'package:food_delivery_app/app_image_path.dart';
+import 'package:food_delivery_app/components/primary_textformfield.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
-import 'package:food_delivery_app/themes/app_color.dart';
+import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:food_delivery_app/components/export_components/login_components.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool isEmailCorrect = false;
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundImageContainer(
-      child: Scaffold(
-        backgroundColor: AppColor.kBackGroundColor,
-        body: Center(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
+    return Scaffold(
+      backgroundColor: AppColors.kBackground,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+        child: Form(
+          key: _formKey,
+          child: FadeAnimation(
+            delay: 1,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: 530,
-                  width: 400,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: AppColor.kWhiteColor,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey.shade400,
-                          offset: const Offset(3.0, 4.0),
-                          blurRadius: 9,
-                          spreadRadius: 1.0)
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 60),
-                    child: Column(
-                      children: [
-                        PrimaryTextFormField(
-                          hintText: 'Email',
-                          controller: emailController,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          width: 326,
-                          height: 48,
-                          fillColor: AppColor.kLightAccentColor,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        PrimaryTextFormField(
-                          hintText: 'Password',
-                          controller: passwordController,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          width: 326,
-                          height: 48,
-                          fillColor: AppColor.kLightAccentColor,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        PrimaryButton(
-                          onTap: () {},
-                          borderRadius: 8,
-                          fontSize: 14,
-                          height: 48,
-                          width: 326,
-                          text: 'Login',
-                          textColor: AppColor.kWhiteColor,
-                          bgColor: AppColor.kPrimary,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        PrimaryTextButton(
-                          title: 'Forgot password?',
-                          fontSize: 14,
-                          onPressed: () {},
-                          textColor: AppColor.kPrimary,
-                        ),
-                        const SizedBox(height: 32),
-                        const DividerRow(),
-                        const SizedBox(height: 32),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SecondaryButton(
-                                onTap: () {},
-                                borderRadius: 8,
-                                height: 65,
-                                width: 65,
-                                bgColor: AppColor.kWhiteColor,
-                                icons: AppImagePath.kLogoFacebook,
-                                iconHeight: 38,
-                                iconWidth: 38,
-                              ),
-                              const SizedBox(height: 16),
-                              SecondaryButton(
-                                onTap: () {},
-                                borderRadius: 8,
-                                height: 65,
-                                width: 65,
-                                bgColor: AppColor.kLightAccentColor,
-                                icons: AppImagePath.kGoogleLogo,
-                                iconHeight: 38,
-                                iconWidth: 38,
-                              ),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              SecondaryButton(
-                                onTap: () {},
-                                borderRadius: 8,
-                                height: 65,
-                                width: 65,
-                                bgColor: AppColor.kLightAccentColor,
-                                icons: AppImagePath.kApple,
-                                iconHeight: 38,
-                                iconWidth: 38,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 32),
-                        CustomRichText(
-                          subtitle: ' Sign up ',
-                          title: 'Don’t have an account?',
-                          subtitleTextStyle: TextStyle(
-                            color: AppColor.kPrimary,
-                            fontSize: 14,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w700,
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, AppRoutes.register);
-                          },
-                        ),
-                      ],
+                Center(
+                  child: Image.asset(AppImagePath.kAppLogo),
+                ),
+                const SizedBox(height: 30),
+                PrimaryTextformfield(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  isFieldValidated: isEmailCorrect,
+                  onChanged: (value) {
+                    setState(() {});
+                    isEmailCorrect = validateEmail(value);
+                  },
+                  labelText: 'Email',
+                  // validator: (value) {
+                  //   if (!validateEmail(value!)) {
+                  //     return 'Please enter a valid email address';
+                  //   }
+                  //   return null;
+                  // },
+                ),
+                const SizedBox(height: 20),
+                PrimaryTextformfield(
+                  labelText: 'Password',
+                  controller: _passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  isForgetButton: true,
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'Please enter your password';
+                  //   } else if (value.length < 6) {
+                  //     return 'Password should be at least 6 characters';+
+                  //   } // else if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*d).+$')
+                  //   //     .hasMatch(value)) {
+                  //   //   return 'Password should contain at least one uppercase letter, one lowercase letter, and one digit';
+                  //   // }
+                  //   return null;
+                  // },
+                ),
+                const SizedBox(height: 30),
+                const DividerRow(),
+                const SizedBox(height: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SecondaryButton(
+                      onTap: () {},
+                      borderRadius: 8,
+                      height: 60,
+                      width: 60,
+                      bgColor: AppColors.kWhiteColor,
+                      icons: AppImagePath.kLogoFacebook,
+                      iconHeight: 36,
+                      iconWidth: 36,
                     ),
-                  ),
+                    const SizedBox(
+                      height: 16,
+                      width: 20,
+                    ),
+                    SecondaryButton(
+                      onTap: () {},
+                      borderRadius: 8,
+                      height: 60,
+                      width: 60,
+                      bgColor: AppColors.kWhiteColor,
+                      icons: AppImagePath.kGoogleLogo,
+                      iconHeight: 36,
+                      iconWidth: 36,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                      width: 20,
+                    ),
+                    SecondaryButton(
+                      onTap: () {},
+                      borderRadius: 8,
+                      height: 60,
+                      width: 60,
+                      bgColor: AppColors.kWhiteColor,
+                      icons: AppImagePath.kApple,
+                      iconHeight: 36,
+                      iconWidth: 36,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+                PrimaryButton(
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        Navigator.pushNamed(context, AppRoutes.home);
+                      }
+                    },
+                    text: 'Sign In'),
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Don't have an account?",
+                        style: TextStyle(
+                          fontSize: 14,
+                        )),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    PrimaryTextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppRoutes.register);
+                      },
+                      title: 'Sign Up',
+                      fontSize: 14,
+                      textColor: AppColors.kPrimary,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -153,5 +150,16 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool validateEmail(String value) {
+    if (value.isEmpty) {
+      return false;
+    } else {
+      final emailRegex = RegExp(
+        r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$',
+      );
+      return emailRegex.hasMatch(value);
+    }
   }
 }

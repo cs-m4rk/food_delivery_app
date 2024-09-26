@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/themes/app_color.dart';
+import 'package:food_delivery_app/themes/app_colors.dart';
 
 class PrimaryButton extends StatefulWidget {
   final VoidCallback onTap;
@@ -8,20 +8,17 @@ class PrimaryButton extends StatefulWidget {
   final double? height;
   final double? borderRadius;
   final double? fontSize;
-  final IconData? iconData;
-  final Color? textColor, bgColor;
-  const PrimaryButton(
-      {Key? key,
-      required this.onTap,
-      required this.text,
-      this.width,
-      this.height,
-      this.borderRadius,
-      this.fontSize,
-      required this.textColor,
-      required this.bgColor,
-      this.iconData})
-      : super(key: key);
+  final Color? color;
+  const PrimaryButton({
+    required this.onTap,
+    required this.text,
+    this.height,
+    this.width,
+    this.borderRadius,
+    this.fontSize,
+    this.color,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<PrimaryButton> createState() => _PrimaryButtonState();
@@ -67,38 +64,24 @@ class _PrimaryButtonState extends State<PrimaryButton>
           ),
         ),
         child: Card(
-          elevation: 5,
+          elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius!),
+            borderRadius: BorderRadius.circular(100),
           ),
           child: Container(
             height: widget.height ?? 55,
             alignment: Alignment.center,
             width: widget.width ?? double.maxFinite,
             decoration: BoxDecoration(
-              color: widget.bgColor,
-              borderRadius: BorderRadius.circular(widget.borderRadius!),
+              color: widget.color ?? AppColors.kPrimary,
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 30),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (widget.iconData != null) ...[
-                  Icon(
-                    widget.iconData,
-                    color: AppColor.kWhiteColor,
-                  ),
-                  const SizedBox(width: 4),
-                ],
-                Text(
-                  widget.text,
-                  style: TextStyle(
-                    color: widget.textColor,
-                    fontSize: widget.fontSize ?? 14,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
+            child: Text(
+              widget.text,
+              style: TextStyle(
+                color: widget.color == null ? Colors.white : Colors.black,
+                fontSize: widget.fontSize ?? 15,
+              ),
             ),
           ),
         ),

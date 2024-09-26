@@ -1,32 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/themes/app_colors.dart';
 
-class CustomRichText extends StatelessWidget {
-  const CustomRichText({
+class CustomRichtext extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String text;
+  final Color? color;
+  final double? fontSize;
+  const CustomRichtext({
+    required this.onPressed,
+    required this.text,
+    this.fontSize,
+    this.color,
     super.key,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-    required this.subtitleTextStyle,
   });
-  final String title, subtitle;
-  final TextStyle subtitleTextStyle;
-  final VoidCallback onTap;
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: RichText(
-        text: TextSpan(
-          text: title,
-          style: const TextStyle(
-              fontSize: 14, fontWeight: FontWeight.w400, fontFamily: 'Inter'),
-          children: <TextSpan>[
-            TextSpan(
-              text: subtitle,
-              style: subtitleTextStyle,
-            ),
-          ],
-        ),
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(padding: EdgeInsets.zero),
+      child: Text(
+        text,
+        style: TextStyle(color: color ?? AppColors.kPrimary, fontSize: 14),
       ),
     );
   }

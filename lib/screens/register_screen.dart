@@ -1,182 +1,143 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/routes/app_routes.dart';
-import 'package:food_delivery_app/themes/app_color.dart';
+import 'package:food_delivery_app/animations/fade_animation.dart';
+import 'package:food_delivery_app/app_image_path.dart';
 import 'package:food_delivery_app/components/export_components/register_components.dart';
+import 'package:food_delivery_app/components/primary_textformfield.dart';
+import 'package:food_delivery_app/routes/app_routes.dart';
+import 'package:food_delivery_app/themes/app_colors.dart';
 
-class RegisterScreen extends StatelessWidget {
-  RegisterScreen({super.key});
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passController = TextEditingController();
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool isEmailCorrect = false;
+  bool isNameCorrect = false;
+  @override
   Widget build(BuildContext context) {
-    return BackgroundImageContainer(
-        child: Scaffold(
-      backgroundColor: Colors.transparent,
+    return Scaffold(
+      backgroundColor: AppColors.kBackground,
       body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.only(
-                top: 235, right: 240, bottom: 15, left: 32),
-            child: Text(
-              'Sign up',
-              style: TextStyle(
-                fontSize: 32,
-                color: AppColor.kLightAccentColor,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Inter',
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-              width: 358,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: AppColor.kWhiteColor.withOpacity(0.4),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColor.kWhiteColor.withOpacity(0.5),
-                    blurRadius: 10, 
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Container(
-                color: Colors.transparent,
-                child: Column(
+        padding: const EdgeInsets.all(20),
+        child: Form(
+          key: _formKey,
+          child: FadeAnimation(
+            delay: 1,
+            child: Column(
+              children: [
+                Center(child: Image.asset(AppImagePath.kAppLogo)),
+                const SizedBox(height: 30),
+                PrimaryTextformfield(
+                  controller: _usernameController,
+                  labelText: 'Username',
+                  isFieldValidated: isNameCorrect,
+                  keyboardType: TextInputType.name,
+                  onChanged: (value) {
+                    isNameCorrect = validateName(value);
+                    setState(() {});
+                  },
+                  validator: (value) {
+                    if (!validateName(value!)) {
+                      return 'Enter a valid name';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                PrimaryTextformfield(
+                  controller: _emailController,
+                  labelText: 'Email',
+                  keyboardType: TextInputType.emailAddress,
+                  isFieldValidated: isEmailCorrect,
+                  onChanged: (value) {
+                    setState(() {});
+                    isEmailCorrect = validateEmail(value);
+                  },
+                  validator: (value) {
+                    if (!validateEmail(value!)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                PrimaryTextformfield(
+                  labelText: 'Password',
+                  controller: _passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  isPasswordField: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    } else if (value.length < 6) {
+                      return 'Password should be at least 6 characters';
+                    } else if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*d).+$')
+                        .hasMatch(value)) {
+                      return 'Password should contain at least one uppercase letter, one lowercase letter, and one digit';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 30),
+                PrimaryButton(
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {}
+                    },
+                    text: 'Sign Up'),
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    CustomRichText(
-                        title:
-                            'Looks like you don’t have an account.                                        ',
-                        subtitle: 'Let’s create a new account for you.',
-                        subtitleTextStyle: TextStyle(
-                          color: AppColor.kLightAccentColor,
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400,
-                        ),
-                        onTap: () {}),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    PrimaryTextFormField(
-                      hintText: 'Name',
-                      controller: nameController,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      width: 326,
-                      height: 48,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    PrimaryTextFormField(
-                      hintText: 'Email',
-                      controller: emailController,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      width: 326,
-                      height: 48,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    PrimaryTextFormField(
-                      hintText: 'Password',
-                      controller: passController,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      width: 326,
-                      height: 48,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    RichText(
-                      textAlign: TextAlign.start,
-                      text: TextSpan(
+                    const Text('Already have an account?',
                         style: TextStyle(
-                          color: AppColor.kLightAccentColor,
                           fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400,
-                        ),
-                        children: [
-                          const TextSpan(
-                            text: ' By selecting Create Account below,  ',
-                          ),
-                          const TextSpan(
-                            text: ' I agree to        ',
-                          ),
-                          TextSpan(
-                            text: '     Terms of Service',
-                            style: TextStyle(
-                              color: AppColor.kPrimary,
-                              fontSize: 14,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          const TextSpan(
-                            text: ' & ',
-                          ),
-                          TextSpan(
-                            text: 'Privacy Policy  ',
-                            style: TextStyle(
-                              color: AppColor.kPrimary,
-                              fontSize: 14,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                        )),
                     const SizedBox(
-                      height: 16,
+                      width: 10,
                     ),
-                    PrimaryButton(
-                      onTap: () {},
-                      borderRadius: 8,
-                      fontSize: 14,
-                      height: 48,
-                      width: 326,
-                      text: 'Create Account',
-                      textColor: AppColor.kWhiteColor,
-                      bgColor: AppColor.kPrimary,
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    CustomRichText(
-                      subtitle: ' Log in',
-                      title: 'Already have an account?',
-                      subtitleTextStyle: TextStyle(
-                        color: AppColor.kPrimary,
-                        fontSize: 14,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                      ),
-                      onTap: () {
+                    PrimaryTextButton(
+                      onPressed: () {
                         Navigator.pushNamed(context, AppRoutes.login);
                       },
+                      title: 'Log in',
+                      fontSize: 14,
+                      textColor: AppColors.kPrimary,
                     )
                   ],
-                ),
-              ),
+                )
+              ],
             ),
-          )
-        ]),
+          ),
+        ),
       ),
-    ));
+    );
+  }
+
+  bool validateName(String value) {
+    if (value.isEmpty) {
+      return false;
+    } else {
+      final nameRegex = RegExp(r'^[a-zA-Z]+$');
+      return nameRegex.hasMatch(value);
+    }
+  }
+
+  bool validateEmail(String value) {
+    if (value.isEmpty) {
+      return false;
+    } else {
+      final emailRegex = RegExp(
+        r'^[w-]+(.[w-]+)*@([w-]+.)+[a-zA-Z]{2,7}$',
+      );
+      return emailRegex.hasMatch(value);
+    }
   }
 }

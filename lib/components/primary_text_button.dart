@@ -20,7 +20,6 @@ class PrimaryTextButton extends StatelessWidget {
         title,
         style: TextStyle(
           fontSize: fontSize,
-          fontFamily: 'Inter',
           fontWeight: FontWeight.bold,
           color: textColor,
         ),

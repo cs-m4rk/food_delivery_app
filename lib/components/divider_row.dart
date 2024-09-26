@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/themes/app_color.dart';
 
 class DividerRow extends StatelessWidget {
   const DividerRow({
@@ -9,22 +7,21 @@ class DividerRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
-        const Expanded(child: Divider()),
+        Expanded(child: Divider()),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             'or',
             style: TextStyle(
               fontSize: 14,
-              fontFamily: 'Inter',
               fontWeight: FontWeight.w400,
-              color: AppColor.kGreyColor,
+              color: Colors.black,
             ),
           ),
         ),
-        const Expanded(child: Divider())
+        Expanded(child: Divider())
       ],
     );
   }

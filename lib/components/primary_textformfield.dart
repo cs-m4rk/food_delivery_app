@@ -1,86 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_delivery_app/themes/app_color.dart';
+import 'package:food_delivery_app/themes/app_colors.dart';
 
-class PrimaryTextFormField extends StatelessWidget {
-  PrimaryTextFormField(
-      {super.key,
-      required this.hintText,
-      this.border,
-      this.enabledBorder,
-      this.focusedBorder,
-      this.errorBorder,
-      this.keyboardType,
-      this.focusedErrorBorder,
-      required this.controller,
-      required this.width,
-      required this.height,
-      this.hintTextColor,
-      this.fillColor,
-      this.onChanged,
-      this.onTapOutside,
-      this.prefixIcon,
-      this.prefixIconColor,
-      this.inputFormatters,
-      this.borderRadius = 8});
-  final double? borderRadius;
-  final Color? fillColor;
-  final String hintText;
-  final OutlineInputBorder? border,
-      enabledBorder,
-      focusedBorder,
-      errorBorder,
-      focusedErrorBorder;
-  final List<TextInputFormatter>? inputFormatters;
-  Widget? prefixIcon;
-  Function(PointerDownEvent)? onTapOutside;
-  final Function(String)? onChanged;
-  final double width, height;
-  TextEditingController controller;
-  final Color? hintTextColor, prefixIconColor;
+class PrimaryTextformfield extends StatefulWidget {
+  final TextEditingController controller;
+  final String? Function(String?)? validator;
+  final String? hintText;
+  final bool isFieldValidated;
+  final bool isForgetButton;
+  final bool isPasswordField;
+  final bool isPhone;
   final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final void Function(String)? onChanged;
+  final String? labelText;
+  const PrimaryTextformfield({
+    super.key,
+    this.hintText,
+    required this.controller,
+    this.inputFormatters,
+    this.onChanged,
+    this.isFieldValidated = false,
+    this.validator,
+    this.isPhone = false,
+    this.isPasswordField = false,
+    this.isForgetButton = false,
+    this.keyboardType,
+    this.labelText,
+  });
+
+  @override
+  State<PrimaryTextformfield> createState() => _PrimaryTextformfieldState();
+}
+
+class _PrimaryTextformfieldState extends State<PrimaryTextformfield> {
+  bool isObscure = true;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: AppColor.kLightAccentColor,
-        borderRadius: BorderRadius.circular(borderRadius!),
-      ),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        style: TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          color: AppColor.kGreyColor,
-        ),
-        decoration: InputDecoration(
-          fillColor: fillColor ?? AppColor.kLightAccentColor,
+    return TextFormField(
+      controller: widget.controller,
+      obscureText: widget.isPasswordField ? isObscure : false,
+      validator: widget.validator,
+      onChanged: widget.onChanged,
+      inputFormatters: widget.inputFormatters,
+      keyboardType: widget.keyboardType,
+      decoration: InputDecoration(
+          hintText: widget.hintText,
+          labelText: widget.labelText,
+          errorMaxLines: 2,
+          filled: false,
           contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-          filled: true,
-          hintText: hintText,
-          hintStyle: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: hintTextColor ?? AppColor.kGreyColor,
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColors.kLine),
+            borderRadius: BorderRadius.circular(10),
           ),
-          prefixIcon: prefixIcon,
-          prefixIconColor: prefixIconColor,
-          border: border,
-          enabledBorder: enabledBorder,
-          focusedBorder: focusedBorder,
-          errorBorder: errorBorder,
-          focusedErrorBorder: focusedErrorBorder,
-        ),
-        onChanged: onChanged,
-        inputFormatters: inputFormatters,
-        onTapOutside: onTapOutside,
-      ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColors.kLine),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColors.kLine),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: AppColors.kLine),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          hintStyle: const TextStyle(
+              fontSize: 14, fontWeight: FontWeight.w300, color: Colors.grey),
+          suffixIcon: widget.isForgetButton
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isObscure = !isObscure;
+                    });
+                  },
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  icon: Icon(
+                    isObscure ? Icons.visibility_off : Icons.visibility,
+                    color: AppColors.kPrimary,
+                  ),
+                )
+              : Icon(widget.isPhone ? Icons.phone_android : Icons.done,
+                  size: 20,
+                  color: widget.isFieldValidated
+                      ? AppColors.kPrimary
+                      : AppColors.kLine)),
     );
   }
 }

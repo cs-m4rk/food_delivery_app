@@ -77,7 +77,8 @@ class _SecondaryButtonState extends State<SecondaryButton>
             width: widget.width ?? double.maxFinite,
             decoration: BoxDecoration(
               color: widget.bgColor,
-              border: Border.all(color: widget.borderColor ?? Colors.transparent),
+              border:
+                  Border.all(color: widget.borderColor ?? Colors.transparent),
               borderRadius: BorderRadius.circular(widget.borderRadius!),
             ),
             child: Row(
@@ -92,10 +93,10 @@ class _SecondaryButtonState extends State<SecondaryButton>
                   widget.text ?? "",
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                      color: widget.textColor,
-                      fontSize: widget.fontSize,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Inter'),
+                    color: widget.textColor,
+                    fontSize: widget.fontSize,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),
