@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/animations/fade_animation.dart';
 import 'package:food_delivery_app/app_image_path.dart';
+import 'package:food_delivery_app/components/bottom_navbar.dart';
 import 'package:food_delivery_app/components/primary_textformfield.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
@@ -119,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 PrimaryButton(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pushNamed(context, AppRoutes.home);
+                        Navigator.pushReplacementNamed(context, AppRoutes.home);
                       }
                     },
                     text: 'Sign In'),

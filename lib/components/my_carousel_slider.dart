@@ -33,13 +33,6 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
                   child: FadeInAnimation(child: widget),
                 ),
                 children: [
-                  const CustomAnimatedText(
-                    text: 'Hi Michael',
-                    fontColor: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    seconds: 1,
-                  ),
                   const SizedBox(height: 20),
                   carousel_slider.CarouselSlider(
                     options: carousel_slider.CarouselOptions(

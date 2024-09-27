@@ -89,7 +89,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 30),
                 PrimaryButton(
                     onTap: () async {
-                      if (_formKey.currentState!.validate()) {}
+                      if (_formKey.currentState!.validate()) {
+                        Navigator.pushNamed(context, AppRoutes.home);
+                      }
                     },
                     text: 'Sign Up'),
                 const SizedBox(height: 30),
