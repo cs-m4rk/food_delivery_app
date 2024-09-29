@@ -94,8 +94,8 @@ class ProfileScreen extends StatelessWidget {
                 height: 10,
               ),
               ProfileMenuWidget(
-                title: 'Billing Details',
-                icon: LineAwesomeIcons.wallet_solid,
+                title: 'Orders',
+                icon: LineAwesomeIcons.receipt_solid,
                 onPress: () {},
                 endIcon: true,
               ),
