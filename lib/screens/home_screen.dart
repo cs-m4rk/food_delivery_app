@@ -72,11 +72,12 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.kBackground,
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           MySliverbar(
             title: MyTabbar(tabController: _tabController),
-            child: MyCarouselSlider(),
+            // child: MyCarouselSlider(),
           ),
         ],
         body: Consumer<Restaurant>(

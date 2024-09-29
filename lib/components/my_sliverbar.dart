@@ -16,7 +16,7 @@
         collapsedHeight: 120,
         floating: false,
         pinned: true,
-        backgroundColor: AppColors.kWhiteColor,
+        backgroundColor: AppColors.kBackground,
         flexibleSpace: FlexibleSpaceBar(
           background: Padding(
             padding: const EdgeInsets.only(bottom: 50.0),

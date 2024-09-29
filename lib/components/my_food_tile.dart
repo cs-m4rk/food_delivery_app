@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/models/food.dart';
-import 'package:food_delivery_app/themes/app_colors.dart';
 
 class MyFoodTile extends StatelessWidget {
   const MyFoodTile({super.key, required this.food, this.onTap});
@@ -25,14 +24,14 @@ class MyFoodTile extends StatelessWidget {
                     children: [
                       Text(
                         food.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "₱" + food.price.toString(),
-                        style: TextStyle(fontWeight: FontWeight.w600),
+                        "₱${food.price}",
+                        style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(food.description),
@@ -48,7 +47,7 @@ class MyFoodTile extends StatelessWidget {
                   child: SizedBox(
                     width: 100,
                     height: 100,
-                    child: Image.network(
+                    child: Image.asset(
                       food.imagePath,
                       fit: BoxFit.cover,
                     ),

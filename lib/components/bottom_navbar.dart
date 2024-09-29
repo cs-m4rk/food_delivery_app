@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/screens/cart_screen.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/profile_screen.dart';
+import 'package:food_delivery_app/screens/purchased_screen.dart';
+import 'package:food_delivery_app/themes/app_colors.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});
@@ -14,11 +16,13 @@ class _BottomNavbarState extends State<BottomNavbar> {
   int _currentIndex = 0;
   late PageController _pageController;
 
+  @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
   }
 
+  @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
@@ -41,15 +45,21 @@ class _BottomNavbarState extends State<BottomNavbar> {
             _currentIndex = index;
           });
         },
-        children: [
+        children: const [
           HomeScreen(),
           CartScreen(),
+          PurchasedScreen(),
           ProfileScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 20,
+        type: BottomNavigationBarType.fixed, 
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
+        backgroundColor: Colors.white, 
+        selectedItemColor: AppColors.kPrimary, 
+        unselectedItemColor: AppColors.kGreyColor, 
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -58,6 +68,10 @@ class _BottomNavbarState extends State<BottomNavbar> {
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
             label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt),
+            label: 'Purchased',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
