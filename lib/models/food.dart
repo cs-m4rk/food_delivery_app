@@ -20,7 +20,7 @@ enum FoodCategory {
   burgers,
   pizza,
   desserts,
-  salads,
+  fries,
   drinks,
 }
 

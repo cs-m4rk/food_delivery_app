@@ -5,12 +5,12 @@ class PrimaryTextButton extends StatelessWidget {
       {super.key,
       required this.onPressed,
       required this.title,
-      required this.fontSize,
-      required this.textColor});
+      this.fontSize,
+      this.textColor});
   final Function() onPressed;
   final String title;
-  final double fontSize;
-  final Color textColor;
+  final double? fontSize;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
