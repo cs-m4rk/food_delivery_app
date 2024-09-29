@@ -27,24 +27,38 @@ class _PaymentScreenState extends State<PaymentScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.kWhiteColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.location_on),
-                      const SizedBox(width: 5),
-                      Text('Delivery Address'),
-                    ],
-                  )
-                ],
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/address');
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.kWhiteColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Payment Methods",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          color: AppColors.kPrimary,
+                        ),
+                        const SizedBox(width: 5),
+                        Text('Delivery Address'),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
             ListView.builder(

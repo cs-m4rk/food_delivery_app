@@ -3,22 +3,24 @@ import 'package:food_delivery_app/themes/app_colors.dart';
 
 class PrimaryButton extends StatefulWidget {
   final VoidCallback onTap;
-  final String text;
+  final String? text;
   final double? width;
   final double? height;
   final double? borderRadius;
   final double? fontSize;
   final Color? color;
+  final Widget? child;
 
   const PrimaryButton({
     required this.onTap,
-    required this.text,
+    this.text,
     this.height,
     this.width,
     this.borderRadius,
     this.fontSize,
     this.color,
     Key? key,
+    this.child,
   }) : super(key: key);
 
   @override
@@ -90,7 +92,7 @@ class _PrimaryButtonState extends State<PrimaryButton>
               borderRadius: BorderRadius.circular(widget.borderRadius ?? 30),
             ),
             child: Text(
-              widget.text,
+              widget.text ?? '',
               style: TextStyle(
                 color: widget.color == null ? Colors.white : Colors.black,
                 fontSize: widget.fontSize ?? 15,
