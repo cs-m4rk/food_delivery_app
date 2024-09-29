@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/components/export_components/login_components.dart';
 import 'package:food_delivery_app/components/my_cart_tile.dart';
 import 'package:food_delivery_app/models/cart_item.dart';
+import 'package:food_delivery_app/routes/app_routes.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           children: [
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, '/address');
+                Navigator.pushNamed(context, AppRoutes.address);
               },
               child: Container(
                 decoration: BoxDecoration(

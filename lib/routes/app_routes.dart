@@ -3,6 +3,7 @@ import 'package:food_delivery_app/components/bottom_navbar.dart';
 import 'package:food_delivery_app/screens/address_screen.dart';
 import 'package:food_delivery_app/screens/cart_screen.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
+import 'package:food_delivery_app/screens/new_address_screen.dart';
 import 'package:food_delivery_app/screens/register_screen.dart';
 
 class AppRoutes {
@@ -12,6 +13,7 @@ class AppRoutes {
   static const String food = '/food';
   static const String cart = '/cart';
   static const String address = '/address';
+  static const String newAddress = '/newaddress';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -25,6 +27,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => CartScreen());
       case address:
         return MaterialPageRoute(builder: (_) => AddressScreen());
+      case newAddress:
+        return MaterialPageRoute(builder: (_) => NewAddressScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

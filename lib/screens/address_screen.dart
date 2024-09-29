@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/components/export_components/login_components.dart';
 import 'package:food_delivery_app/components/my_container.dart';
+import 'package:food_delivery_app/routes/app_routes.dart';
 
 class AddressScreen extends StatefulWidget {
   const AddressScreen({super.key});
@@ -69,16 +70,13 @@ class _AddressScreenState extends State<AddressScreen> {
               ),
               const SizedBox(height: 20),
               PrimaryButton(
-                onTap: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.add),
-                    const SizedBox(width: 5),
-                    Text('Add Address'),
-                  ],
-                ),
-              ),
+                onTap: () {
+                  Navigator.pushNamed(context, AppRoutes.newAddress);
+                },
+                text: 'Add Address',
+                icon: Icon(Icons.add, color: Colors.white),
+                color: Colors.blue,
+              )
             ],
           ),
         ),
