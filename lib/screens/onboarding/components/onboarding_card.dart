@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_delivery_app/themes/app_colors.dart';
 import '/models/onboarding.dart';
 import 'package:get/get.dart';
 
@@ -27,15 +28,21 @@ class OnBoardingCard extends StatelessWidget {
             const Spacer(),
             RichText(
               textAlign: TextAlign.center,
-              text: TextSpan(text: onBoarding.title1, children: [
+              text: TextSpan( children: [
                 TextSpan(
-                  text: onBoarding.title2,
+                  text: onBoarding.title,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.kPrimary,
+                      fontSize: 25),
                 )
               ]),
             ),
+            SizedBox(height: 20.h),
             Text(
               onBoarding.description,
               textAlign: TextAlign.center,
+             
             ),
             SizedBox(height: 40.h),
           ],
