@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/components/bottom_navbar.dart';
-import 'package:food_delivery_app/screens/food_screen.dart';
+import 'package:food_delivery_app/screens/address_screen.dart';
+import 'package:food_delivery_app/screens/cart_screen.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
 import 'package:food_delivery_app/screens/onboarding/onboarding_view.dart';
 import 'package:food_delivery_app/screens/profile_screen.dart';
@@ -12,9 +13,14 @@ class AppRoutes {
   static const String register = '/register';
   static const String home = '/home';
   static const String food = '/food';
+
   static const String updateProfile = '/updateProfile';
   static const String profile = '/profile';
     static const String onboarding = '/onboarding';
+
+  static const String cart = '/cart';
+  static const String address = '/address';
+
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -22,14 +28,19 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => BottomNavbar());
       case login:
         return MaterialPageRoute(builder: (_) => LoginScreen());
-      case food:
-        return MaterialPageRoute(builder: (_) => FoodScreen());
       case register:
         return MaterialPageRoute(builder: (_) => RegisterScreen());
+
       case updateProfile:
         return MaterialPageRoute(builder: (_) => UpdateProfileScreen());
       case onboarding:
         return MaterialPageRoute(builder: (_) => OnboardingView());
+
+      case cart:
+        return MaterialPageRoute(builder: (_) => CartScreen());
+      case address:
+        return MaterialPageRoute(builder: (_) => AddressScreen());
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

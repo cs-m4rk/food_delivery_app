@@ -44,14 +44,15 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
                         enableInfiniteScroll: false,
                         autoPlayAnimationDuration: const Duration(seconds: 1)),
                     items: [1, 2, 3, 4, 5].map((i) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return const TaskCard();
-                        },
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.kPrimary,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: const TaskCard(),
                       );
                     }).toList(),
                   ),
-
                 ],
               ),
             ),
@@ -70,9 +71,6 @@ class TaskCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       width: double.infinity,
-      decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
