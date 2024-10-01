@@ -4,8 +4,8 @@ import 'package:food_delivery_app/app_image_path.dart';
 import 'package:food_delivery_app/components/export_components/register_components.dart';
 import 'package:food_delivery_app/components/primary_textformfield.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
+import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
-
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -19,8 +19,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool isEmailCorrect = false;
-  bool isNameCorrect = false;
+  final _confirmPasswordController = TextEditingController();
+  bool _isObscure = true;
+  String? _errorMessage;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,36 +39,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(height: 30),
                 PrimaryTextformfield(
                   controller: _usernameController,
-                  labelText: 'Username',
-                  isFieldValidated: isNameCorrect,
+                  labelText: 'Full name',
                   keyboardType: TextInputType.name,
-                  onChanged: (value) {
-                    isNameCorrect = validateName(value);
-                    setState(() {});
-                  },
-                  validator: (value) {
-                    if (!validateName(value!)) {
-                      return 'Enter a valid name';
-                    }
-                    return null;
-                  },
+                  validator: validateName,
                 ),
                 const SizedBox(height: 20),
                 PrimaryTextformfield(
                   controller: _emailController,
                   labelText: 'Email',
                   keyboardType: TextInputType.emailAddress,
-                  isFieldValidated: isEmailCorrect,
-                  onChanged: (value) {
-                    setState(() {});
-                    isEmailCorrect = validateEmail(value);
-                  },
-                  validator: (value) {
-                    if (!validateEmail(value!)) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
+                  validator: validateEmail,
                 ),
                 const SizedBox(height: 20),
                 PrimaryTextformfield(
@@ -74,23 +56,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _passwordController,
                   keyboardType: TextInputType.visiblePassword,
                   isPasswordField: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    } else if (value.length < 6) {
-                      return 'Password should be at least 6 characters';
-                    } else if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*d).+$')
-                        .hasMatch(value)) {
-                      return 'Password should contain at least one uppercase letter, one lowercase letter, and one digit';
-                    }
-                    return null;
-                  },
+                  validator: passwordValidator,
                 ),
+                const SizedBox(height: 20),
+                PrimaryTextformfield(
+                  labelText: 'Confirm Password',
+                  controller: _confirmPasswordController,
+                ),
+                if (_errorMessage != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      _errorMessage!,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 30),
                 PrimaryButton(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pushNamed(context, AppRoutes.home);
+                        await register();
                       }
                     },
                     text: 'Sign Up'),
@@ -123,23 +111,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  bool validateName(String value) {
-    if (value.isEmpty) {
-      return false;
-    } else {
-      final nameRegex = RegExp(r'^[a-zA-Z]+$');
-      return nameRegex.hasMatch(value);
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your name';
     }
+
+    return null;
   }
 
-  bool validateEmail(String value) {
-    if (value.isEmpty) {
-      return false;
+  String? validateEmail(String? value) {
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+
+    if (value == null || value.isEmpty) {
+      return 'Please enter your email';
+    } else if (!emailRegex.hasMatch(value)) {
+      return 'Please enter a valid email';
+    }
+
+    return null;
+  }
+
+  String? passwordValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    } else if (value.length < 6) {
+      return 'Password should be at least 6 characters';
+    }
+
+    return null;
+  }
+
+  Future<void> register() async {
+    final authService = AuthService();
+
+    if (_passwordController.text == _confirmPasswordController.text) {
+      try {
+        // trying to register
+        await authService.register(
+          _emailController.text,
+          _passwordController.text,
+          _usernameController.text,
+        );
+
+        // login automatically
+        await authService.login(
+            _emailController.text, _passwordController.text);
+
+      } catch (e) {
+        setState(() {
+          _errorMessage = 'Registration or login failed. Please try again.';
+        });
+      }
     } else {
-      final emailRegex = RegExp(
-        r'^[w-]+(.[w-]+)*@([w-]+.)+[a-zA-Z]{2,7}$',
-      );
-      return emailRegex.hasMatch(value);
+      setState(() {
+        _errorMessage = 'Password does not match';
+      });
     }
   }
 }

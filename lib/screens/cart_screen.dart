@@ -94,34 +94,40 @@ class _CartScreenState extends State<CartScreen> {
                   ],
                 ),
               ),
-              PrimaryButton(
-                onTap: () {
-                  final selectedItems = userCart
-                      .asMap()
-                      .entries
-                      .where((entry) => _checkedItems[entry.key])
-                      .map((entry) => entry.value)
-                      .toList();
-                  if (selectedItems.isNotEmpty) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PaymentScreen(
-                          selectedItems: selectedItems,
-                        ),
+              userCart.isNotEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 25),
+                      child: PrimaryButton(
+                        onTap: () {
+                          final selectedItems = userCart
+                              .asMap()
+                              .entries
+                              .where((entry) => _checkedItems[entry.key])
+                              .map((entry) => entry.value)
+                              .toList();
+                          if (selectedItems.isNotEmpty) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PaymentScreen(
+                                  selectedItems: selectedItems,
+                                ),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text('Please select items to checkout'),
+                              ),
+                            );
+                          }
+                        },
+                        text: 'Checkout',
                       ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please select items to checkout'),
-                      ),
-                    );
-                  }
-                },
-                text: 'Checkout',
-              ),
-              const SizedBox(height: 25),
+                    )
+                  : const SizedBox(),
             ],
           ),
         );

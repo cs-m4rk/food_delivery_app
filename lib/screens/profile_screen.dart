@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
-import 'package:food_delivery_app/screens/home_screen.dart';
-import 'package:food_delivery_app/screens/update_profile_screen.dart';
-import 'package:food_delivery_app/themes/app_colors.dart';
+import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
@@ -114,13 +112,24 @@ class ProfileScreen extends StatelessWidget {
               ProfileMenuWidget(
                 title: 'Logout',
                 icon: LineAwesomeIcons.sign_out_alt_solid,
-                onPress: () {},
+                onPress: () => logout(),
                 endIcon: false,
                 textColor: Colors.red,
               )
             ],
           ),
         ));
+  }
+
+  Future<bool> logout() async {
+    final authService = AuthService();
+
+    try {
+      await authService.logout();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
 

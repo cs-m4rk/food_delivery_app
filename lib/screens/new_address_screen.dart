@@ -89,6 +89,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
               DropdownButton<String>(
                 hint: const Text('Select Region'),
                 value: selectedRegion,
+                isExpanded: true,
                 onChanged: (String? newValue) {
                   setState(() {
                     selectedRegion = newValue;
@@ -110,81 +111,75 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
 
               // Show Provinces Dropdown if a Region is selected
               if (selectedRegion != null)
-                Column(
-                  children: [
-                    DropdownButton<String>(
-                      hint: const Text('Select Province'),
-                      value: selectedProvince,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedProvince = newValue;
-                          // Optionally reset other selections
-                          selectedCity = null;
-                          selectedBarangay = null;
-                        });
-                      },
-                      items: provinces
-                          .where((province) =>
-                              province.regionCode == selectedRegion)
-                          .map((province) {
-                        return DropdownMenuItem<String>(
-                          value: province.provCode,
-                          child: Text(province.name),
-                        );
-                      }).toList(),
-                    ),
-                    const SizedBox(height: 10),
-
-                    // Show Cities Dropdown if a Province is selected
-                    if (selectedProvince != null)
-                      Column(
-                        children: [
-                          DropdownButton<String>(
-                            hint: const Text('Select City'),
-                            value: selectedCity,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedCity = newValue;
-                                // Optionally reset barangay selection
-                                selectedBarangay = null;
-                              });
-                            },
-                            items: cities
-                                .where((city) =>
-                                    city.provinceCode == selectedProvince)
-                                .map((city) {
-                              return DropdownMenuItem<String>(
-                                value: city.cityCode,
-                                child: Text(city.name),
-                              );
-                            }).toList(),
-                          ),
-                          const SizedBox(height: 10),
-
-                          // Show Barangays Dropdown if a City is selected
-                          if (selectedCity != null)
-                            DropdownButton<String>(
-                              hint: const Text('Select Barangay'),
-                              value: selectedBarangay,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  selectedBarangay = newValue;
-                                });
-                              },
-                              items: barangays
-                                  .where((barangay) =>
-                                      barangay.cityCode == selectedCity)
-                                  .map((barangay) {
-                                return DropdownMenuItem<String>(
-                                  value: barangay.cityCode,
-                                  child: Text(barangay.name),
-                                );
-                              }).toList(),
-                            ),
-                        ],
-                      ),
-                  ],
+                DropdownButton<String>(
+                  hint: const Text('Select Province'),
+                  value: selectedProvince,
+                  isExpanded: true,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedProvince = newValue;
+                      // Optionally reset other selections
+                      selectedCity = null;
+                      selectedBarangay = null;
+                    });
+                  },
+                  items: provinces
+                      .where(
+                          (province) => province.regionCode == selectedRegion)
+                      .map((province) {
+                    return DropdownMenuItem<String>(
+                      value: province.provCode,
+                      child: Text(province.name),
+                    );
+                  }).toList(),
                 ),
+              const SizedBox(height: 10),
+
+              // Show Cities Dropdown if a Province is selected
+              if (selectedProvince != null)
+                DropdownButton<String>(
+                  hint: const Text('Select City'),
+                  value: selectedCity,
+                  isExpanded: true,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedCity = newValue;
+                      // Optionally reset barangay selection
+                      selectedBarangay = null;
+                    });
+                  },
+                  items: cities
+                      .where((city) => city.provinceCode == selectedProvince)
+                      .map((city) {
+                    return DropdownMenuItem<String>(
+                      value: city.cityCode,
+                      child: Text(city.name),
+                    );
+                  }).toList(),
+                ),
+              const SizedBox(height: 10),
+
+              // Show Barangays Dropdown if a City is selected
+              if (selectedCity != null)
+                DropdownButton<String>(
+                  hint: const Text('Select Barangay'),
+                  value: selectedBarangay,
+                  isExpanded: true,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedBarangay = newValue;
+                    });
+                  },
+                  items: barangays
+                      .where((barangay) => barangay.cityCode == selectedCity)
+                      .map((barangay) {
+                    return DropdownMenuItem<String>(
+                      value: barangay.name,
+                      child: Text(barangay.name),
+                    );
+                  }).toList(),
+                ),
+
               const SizedBox(height: 10),
 
               PrimaryTextformfield(

@@ -19,7 +19,6 @@ class Food {
 enum FoodCategory {
   burgers,
   pizza,
-  desserts,
   fries,
   drinks,
 }

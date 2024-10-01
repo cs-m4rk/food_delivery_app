@@ -2,31 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/components/export_components/login_components.dart';
+import 'package:food_delivery_app/components/onboarding_card.dart';
 import '/models/onboarding.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
-import '/screens/onboarding/components/custom_indicator.dart';
-import '/screens/onboarding/components/onboarding_card.dart';
+
 
 import 'package:get/get.dart';
 
-class OnboardingView extends StatefulWidget {
-  const OnboardingView({super.key});
+import '../components/custom_indicator.dart';
+
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
 
   @override
-  State<OnboardingView> createState() => _OnboardingViewState();
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingViewState extends State<OnboardingView> {
+class _OnboardingScreenState extends State<OnboardingScreen> {
   PageController pageController = PageController();
   int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark
-    ));
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.dark));
     return Scaffold(
       body: SafeArea(
         child: Column(

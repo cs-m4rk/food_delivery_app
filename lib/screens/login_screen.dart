@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/animations/fade_animation.dart';
 import 'package:food_delivery_app/app_image_path.dart';
-import 'package:food_delivery_app/components/bottom_navbar.dart';
 import 'package:food_delivery_app/components/primary_textformfield.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
+import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:food_delivery_app/components/export_components/login_components.dart';
 
@@ -18,7 +18,24 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool isEmailCorrect = false;
+  String? _errorMessage;
+  bool _isObscure = true;
+  bool _isPasswordFieldEmpty = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordController.addListener(() {
+      setState(() {
+        _isPasswordFieldEmpty = _passwordController.text.isEmpty;
+      });
+    });
+  }
+
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,37 +56,47 @@ class _LoginScreenState extends State<LoginScreen> {
                 PrimaryTextformfield(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  isFieldValidated: isEmailCorrect,
-                  onChanged: (value) {
-                    setState(() {});
-                    isEmailCorrect = validateEmail(value);
-                  },
                   labelText: 'Email',
-                  // validator: (value) {
-                  //   if (!validateEmail(value!)) {
-                  //     return 'Please enter a valid email address';
-                  //   }
-                  //   return null;
-                  // },
+                  prefixIcon: const Icon(
+                    Icons.email,
+                    color: AppColors.kPrimary,
+                  ),
+                  validator: validateEmail,
                 ),
                 const SizedBox(height: 20),
                 PrimaryTextformfield(
                   labelText: 'Password',
                   controller: _passwordController,
-                  keyboardType: TextInputType.visiblePassword,
-                  isForgetButton: true,
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'Please enter your password';
-                  //   } else if (value.length < 6) {
-                  //     return 'Password should be at least 6 characters';+
-                  //   } // else if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*d).+$')
-                  //   //     .hasMatch(value)) {
-                  //   //   return 'Password should contain at least one uppercase letter, one lowercase letter, and one digit';
-                  //   // }
-                  //   return null;
-                  // },
+                  obscureText: _isObscure,
+                  suffixIcon: _isPasswordFieldEmpty
+                      ? null
+                      : IconButton(
+                          icon: Icon(_isObscure
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
+                        ),
+                  prefixIcon: const Icon(
+                    Icons.lock,
+                    color: AppColors.kPrimary,
+                  ),
+                  validator: validatePassword,
                 ),
+                if (_errorMessage != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      _errorMessage!,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 30),
                 const DividerRow(),
                 const SizedBox(height: 25),
@@ -120,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 PrimaryButton(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pushReplacementNamed(context, AppRoutes.home);
+                        await login();
                       }
                     },
                     text: 'Sign In'),
@@ -153,14 +180,41 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  bool validateEmail(String value) {
-    if (value.isEmpty) {
-      return false;
-    } else {
-      final emailRegex = RegExp(
-        r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$',
-      );
-      return emailRegex.hasMatch(value);
+  String? validateEmail(String? value) {
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+
+    if (value == null || value.isEmpty) {
+      return 'Please enter your email';
+    } else if (!emailRegex.hasMatch(value)) {
+      return 'Please enter a valid email';
+    }
+
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    } else if (value.length < 6) {
+      return 'Password should be at least 6 characters';
+    }
+    return null;
+  }
+
+  Future<void> login() async {
+    final authService = AuthService();
+
+    try {
+      await authService.login(_emailController.text, _passwordController.text);
+      setState(() {
+        _errorMessage = null;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage =
+            'Login failed. Please check your credentials and try again';
+      });
     }
   }
 }

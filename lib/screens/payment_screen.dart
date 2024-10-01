@@ -167,7 +167,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
               child: PrimaryButton(onTap: () {}, text: "Place Order"),
             ),
           ],
