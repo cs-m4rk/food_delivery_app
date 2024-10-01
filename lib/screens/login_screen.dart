@@ -94,18 +94,30 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 20,
                     ),
                     SecondaryButton(
+<<<<<<< Updated upstream
                       onTap: () async {
                         User? user = await _authService
+=======
+                      onTap:  () async {
+                        User? user = await AuthService()
+>>>>>>> Stashed changes
                             .signInWithGoogle(); // Use AuthService
                         if (user != null) {
                         // ignore: use_build_context_synchronously
                         Navigator.pushNamed(context, AppRoutes.home);
                           // If sign-in is successful, navigate to home or show user details
+<<<<<<< Updated upstream
                           print("Signed in as: ${user.displayName}");
                         } else {
                           print("Sign-in failed");
                         }
                       },
+=======
+                  
+                        } else {
+                    
+                        }},
+>>>>>>> Stashed changes
                       borderRadius: 8,
                       height: 60,
                       width: 60,
