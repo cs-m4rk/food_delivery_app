@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/animations/fade_animation.dart';
 import 'package:food_delivery_app/app_image_path.dart';
 import 'package:food_delivery_app/components/bottom_navbar.dart';
 import 'package:food_delivery_app/components/primary_textformfield.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
+import 'package:food_delivery_app/services/authservice.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:food_delivery_app/components/export_components/login_components.dart';
 
@@ -15,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -91,7 +94,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 20,
                     ),
                     SecondaryButton(
-                      onTap: () {},
+                      onTap: () async {
+                        User? user = await _authService
+                            .signInWithGoogle(); // Use AuthService
+                        if (user != null) {
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushNamed(context, AppRoutes.home);
+                          // If sign-in is successful, navigate to home or show user details
+                          print("Signed in as: ${user.displayName}");
+                        } else {
+                          print("Sign-in failed");
+                        }
+                      },
                       borderRadius: 8,
                       height: 60,
                       width: 60,

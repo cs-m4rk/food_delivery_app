@@ -18,7 +18,7 @@ class UpdateProfileScreen extends StatelessWidget {
             },
           ),
         ),
-        title: Text('Edit Profile'),
+        title: Text('Edit Profile', style:TextStyle(color: AppColors.kWhiteColor),),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

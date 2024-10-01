@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/components/export_components/login_components.dart';
+import 'package:food_delivery_app/routes/app_routes.dart';
 import '/models/onboarding.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
 import '/screens/onboarding/components/custom_indicator.dart';
@@ -56,7 +57,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               width: 130.w,
               onTap: () {
                 if (currentIndex == (onboardingList.length - 1)) {
-                  Get.offAll(() => const LoginScreen());
+         Navigator.pushNamed(context, AppRoutes.login);
                 } else {
                   pageController.nextPage(
                     duration: const Duration(milliseconds: 500),

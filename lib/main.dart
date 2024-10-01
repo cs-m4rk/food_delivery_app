@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
 
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: GetMaterialApp(
-            title: 'Foochi- Food App',
+            title: 'Food Delivery App',
             debugShowCheckedModeBanner: false,
             scrollBehavior: const ScrollBehavior()
                 .copyWith(physics: const BouncingScrollPhysics()),

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/update_profile_screen.dart';
-import 'package:food_delivery_app/services/authservice.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class FavouritesScreen extends StatelessWidget {
+  const FavouritesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +60,11 @@ class ProfileScreen extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                '',
+                'Place holder',
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
               Text(
-            '',
+                'Place holder',
                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
@@ -83,7 +82,7 @@ class ProfileScreen extends StatelessWidget {
                       shape: const StadiumBorder()),
                   child: const Text(
                     'Edit Profile',
-                    style: TextStyle(fontSize: 15, color: Colors.black),
+                    style: TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
               ),

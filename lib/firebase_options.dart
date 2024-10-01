@@ -64,6 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '434113803542',
     projectId: 'food-delivery-app-fc8a5',
     storageBucket: 'food-delivery-app-fc8a5.appspot.com',
+    androidClientId: '434113803542-l2jnbu9pak6m4kf740k03plveb40tqo7.apps.googleusercontent.com',
+    iosClientId: '434113803542-i899u4caiaal2nvk4cqpjcvkjgjkbac6.apps.googleusercontent.com',
     iosBundleId: 'com.example.foodDeliveryApp',
   );
 
@@ -73,6 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '434113803542',
     projectId: 'food-delivery-app-fc8a5',
     storageBucket: 'food-delivery-app-fc8a5.appspot.com',
+    androidClientId: '434113803542-l2jnbu9pak6m4kf740k03plveb40tqo7.apps.googleusercontent.com',
+    iosClientId: '434113803542-i899u4caiaal2nvk4cqpjcvkjgjkbac6.apps.googleusercontent.com',
     iosBundleId: 'com.example.foodDeliveryApp',
   );
 
@@ -85,4 +89,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'food-delivery-app-fc8a5.appspot.com',
     measurementId: 'G-1W1520LGEP',
   );
+
 }
