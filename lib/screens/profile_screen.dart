@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/update_profile_screen.dart';
-import 'package:food_delivery_app/services/authservice.dart';
+
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';

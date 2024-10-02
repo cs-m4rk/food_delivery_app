@@ -5,9 +5,10 @@ import 'package:food_delivery_app/app_image_path.dart';
 import 'package:food_delivery_app/components/bottom_navbar.dart';
 import 'package:food_delivery_app/components/primary_textformfield.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
-import 'package:food_delivery_app/services/authservice.dart';
+import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:food_delivery_app/components/export_components/login_components.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -94,30 +95,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 20,
                     ),
                     SecondaryButton(
-<<<<<<< Updated upstream
                       onTap: () async {
-                        User? user = await _authService
-=======
-                      onTap:  () async {
-                        User? user = await AuthService()
->>>>>>> Stashed changes
-                            .signInWithGoogle(); // Use AuthService
+                        User? user = await AuthService().signInWithGoogle();
+
                         if (user != null) {
-                        // ignore: use_build_context_synchronously
-                        Navigator.pushNamed(context, AppRoutes.home);
-                          // If sign-in is successful, navigate to home or show user details
-<<<<<<< Updated upstream
-                          print("Signed in as: ${user.displayName}");
-                        } else {
-                          print("Sign-in failed");
+                          Navigator.pushNamed(context, AppRoutes.home);
                         }
+                        // Navigate to HomePage and pass the user information
                       },
-=======
-                  
-                        } else {
-                    
-                        }},
->>>>>>> Stashed changes
                       borderRadius: 8,
                       height: 60,
                       width: 60,
