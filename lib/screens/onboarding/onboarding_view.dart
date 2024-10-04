@@ -7,6 +7,7 @@ import '/models/onboarding.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
 import '/screens/onboarding/components/custom_indicator.dart';
 import '/screens/onboarding/components/onboarding_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:get/get.dart';
 
@@ -18,16 +19,20 @@ class OnboardingView extends StatefulWidget {
 }
 
 class _OnboardingViewState extends State<OnboardingView> {
+  Future<void> completeOnboarding() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('onboardingComplete', true);
+  }
+
   PageController pageController = PageController();
   int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark
-    ));
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.dark));
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -57,12 +62,8 @@ class _OnboardingViewState extends State<OnboardingView> {
               width: 130.w,
               onTap: () {
                 if (currentIndex == (onboardingList.length - 1)) {
-         Navigator.pushNamed(context, AppRoutes.login);
-                } else {
-                  pageController.nextPage(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.ease,
-                  );
+                  completeOnboarding();
+                  Navigator.pushNamed(context, AppRoutes.login);
                 }
               },
               text: currentIndex == (onboardingList.length - 1)

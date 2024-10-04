@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/models/user_model.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/update_profile_screen.dart';
@@ -8,7 +9,10 @@ import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+
+  final UserModel userModel;
+
+  const ProfileScreen({Key? key, required this.userModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.home);
+              Navigator.pop(context);
             },
             icon: const Icon(LineAwesomeIcons.angle_left_solid),
           ),
@@ -31,9 +35,11 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(
                     width: 120,
                     height: 120,
-                    child: ClipRect(
-                      child: Image.asset('assets/images/profile.jpg',
-                          fit: BoxFit.cover),
+                    child: ClipOval(
+                        child: userModel.photoURL != null
+                        ? Image.network(userModel.photoURL!, fit: BoxFit.cover)
+                        : Image.asset('assets/images/default_profile.png',
+                            fit: BoxFit.cover),
                     ),
                   ),
                   Positioned(
@@ -60,14 +66,14 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                '',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              ),
-              Text(
-            '',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-              ),
+             Text(
+              userModel.displayName ?? 'No Name',
+              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              userModel.email ?? 'No Email',
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+            ),
               const SizedBox(
                 height: 20,
               ),

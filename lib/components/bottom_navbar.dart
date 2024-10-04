@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/models/user_model.dart'; // Import your UserModel
 import 'package:food_delivery_app/screens/cart_screen.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/profile_screen.dart';
@@ -15,17 +17,33 @@ class BottomNavbar extends StatefulWidget {
 class _BottomNavbarState extends State<BottomNavbar> {
   int _currentIndex = 0;
   late PageController _pageController;
+  UserModel? _userModel;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
+    _getCurrentUser(); // Fetch the current user data
   }
 
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+
+  // Fetch the current user from Firebase and create a UserModel instance
+  Future<void> _getCurrentUser() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      setState(() {
+        _userModel = UserModel(
+          email: currentUser.email,
+          displayName: currentUser.displayName,
+          photoURL: currentUser.photoURL,
+        );
+      });
+    }
   }
 
   void _onItemTapped(int index) {
@@ -45,11 +63,15 @@ class _BottomNavbarState extends State<BottomNavbar> {
             _currentIndex = index;
           });
         },
-        children: const [
-          HomeScreen(),
-          CartScreen(),
-          PurchasedScreen(),
-          ProfileScreen(),
+        children: [
+          const HomeScreen(),
+          const CartScreen(),
+          const PurchasedScreen(),
+          // Only show ProfileScreen if _userModel is not null
+          if (_userModel != null)
+            ProfileScreen(userModel: _userModel!)
+          else
+            const Center(child: CircularProgressIndicator()), // Loading indicator until user data is fetched
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:food_delivery_app/models/user_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -62,11 +63,23 @@ class AuthService {
     print("Error during Google Sign-In: $e");
     return null;
   }
+
+  
 }
 
-
+  Stream<UserModel?> get userStream {
+    return _firebaseAuth.authStateChanges().map((User? user) {
+      if (user != null) {
+        // If logged in, convert to UserModel
+        return UserModel.fromFirebaseUser(user);
+      } else {
+        return null; // Not logged in
+      }
+    });
+  }
   //logout
   Future<void> logout() async {
     await _firebaseAuth.signOut();
+    
   }
 }

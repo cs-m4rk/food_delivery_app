@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/models/restaurant.dart';
+import 'package:food_delivery_app/wrapper.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:provider/provider.dart';
@@ -50,8 +51,7 @@ class MyApp extends StatelessWidget {
                 .copyWith(physics: const BouncingScrollPhysics()),
             defaultTransition: Transition.fadeIn,
             locale: const Locale('en_US'),
-          initialRoute: AppRoutes.onboarding,
-      onGenerateRoute: AppRoutes.generateRoute,
+          home: const Wrapper(),
           ),
         );
       },

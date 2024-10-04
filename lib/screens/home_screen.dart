@@ -21,23 +21,25 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  @override
   void initState() {
     super.initState();
     _tabController =
         TabController(length: FoodCategory.values.length, vsync: this);
   }
 
+  @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
   }
 
-// sort out and return a list of food items based on the category
+  // sort out and return a list of food items based on the category
   List<Food> filterFoodByCategory(FoodCategory category, List<Food> fullMenu) {
     return fullMenu.where((food) => food.category == category).toList();
   }
 
-// return list of food items based on the category
+  // return list of food items based on the category
   List<Widget> getFoodByCategory(List<Food> fullMenu) {
     return FoodCategory.values.map((category) {
       // get category menu
@@ -87,6 +89,8 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ),
       ),
+      // Add the BottomNavbar to the Scaffold's bottomNavigationBar property
+      bottomNavigationBar: const BottomNavbar(),
     );
   }
 }
