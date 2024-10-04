@@ -53,7 +53,6 @@ class _PrimaryTextformfieldState extends State<PrimaryTextformfield> {
         prefixIcon: widget.prefixIcon,
         hintText: widget.hintText,
         labelText: widget.labelText,
-        errorMaxLines: 2,
         filled: false,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

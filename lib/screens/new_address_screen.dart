@@ -1,10 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
-
 import 'package:food_delivery_app/components/export_components/login_components.dart';
+import 'package:food_delivery_app/components/my_dropdown.dart';
 import 'package:food_delivery_app/components/primary_textformfield.dart';
 import 'package:food_delivery_app/models/address.dart';
+import 'package:food_delivery_app/models/customer_details.dart';
+import 'package:food_delivery_app/routes/app_routes.dart';
+import 'package:food_delivery_app/services/auth/auth_service.dart';
+import 'package:food_delivery_app/services/database/database.dart';
+import 'package:get/get.dart';
 
 class NewAddressScreen extends StatefulWidget {
   const NewAddressScreen({super.key});
@@ -28,6 +35,8 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
   List<Province> provinces = [];
   List<City> cities = [];
   List<Barangay> barangays = [];
+
+  final Database _database = Database();
 
   @override
   void initState() {
@@ -86,98 +95,94 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
               const SizedBox(height: 10),
 
               // Dropdown for Regions
-              DropdownButton<String>(
-                hint: const Text('Select Region'),
-                value: selectedRegion,
-                isExpanded: true,
+
+              MyDropdown(
+                name: 'Region',
+                address: regions,
+                selectedValue: selectedRegion,
+                getLabel: (region) => region.name,
+                getValue: (region) => region.name,
+                isEnable: true,
+                filterAddress: null, // No filter for regions
                 onChanged: (String? newValue) {
                   setState(() {
                     selectedRegion = newValue;
-                    // Optionally reset other selections
                     selectedProvince = null;
                     selectedCity = null;
                     selectedBarangay = null;
                   });
                 },
-                items: regions.map((region) {
-                  return DropdownMenuItem<String>(
-                    value: region.regionCode,
-                    child: Text(region.name),
-                  );
-                }).toList(),
               ),
-
               const SizedBox(height: 10),
 
-              // Show Provinces Dropdown if a Region is selected
+              // Dropdown for Provinces
               if (selectedRegion != null)
-                DropdownButton<String>(
-                  hint: const Text('Select Province'),
-                  value: selectedProvince,
-                  isExpanded: true,
+                MyDropdown(
+                  name: 'Province',
+                  address: provinces,
+                  selectedValue: selectedProvince,
+                  getLabel: (province) => province.name,
+                  getValue: (province) => province.name,
+                  isEnable: true,
+                  filterAddress: (province) =>
+                      province.regionCode ==
+                      regions
+                          .firstWhereOrNull(
+                              (region) => region.name == selectedRegion)
+                          ?.regionCode,
                   onChanged: (String? newValue) {
                     setState(() {
                       selectedProvince = newValue;
-                      // Optionally reset other selections
                       selectedCity = null;
                       selectedBarangay = null;
                     });
                   },
-                  items: provinces
-                      .where(
-                          (province) => province.regionCode == selectedRegion)
-                      .map((province) {
-                    return DropdownMenuItem<String>(
-                      value: province.provCode,
-                      child: Text(province.name),
-                    );
-                  }).toList(),
                 ),
               const SizedBox(height: 10),
 
-              // Show Cities Dropdown if a Province is selected
+              // city dropdown
               if (selectedProvince != null)
-                DropdownButton<String>(
-                  hint: const Text('Select City'),
-                  value: selectedCity,
-                  isExpanded: true,
+                MyDropdown(
+                  name: 'City/Municipality',
+                  address: cities,
+                  selectedValue: selectedCity,
+                  getLabel: (city) => city.name,
+                  getValue: (city) => city.name,
+                  isEnable: true,
+                  filterAddress: (city) =>
+                      city.provCode ==
+                      provinces
+                          .firstWhereOrNull(
+                              (province) => province.name == selectedProvince)
+                          ?.provCode,
                   onChanged: (String? newValue) {
                     setState(() {
                       selectedCity = newValue;
-                      // Optionally reset barangay selection
                       selectedBarangay = null;
                     });
                   },
-                  items: cities
-                      .where((city) => city.provinceCode == selectedProvince)
-                      .map((city) {
-                    return DropdownMenuItem<String>(
-                      value: city.cityCode,
-                      child: Text(city.name),
-                    );
-                  }).toList(),
                 ),
+
               const SizedBox(height: 10),
 
-              // Show Barangays Dropdown if a City is selected
               if (selectedCity != null)
-                DropdownButton<String>(
-                  hint: const Text('Select Barangay'),
-                  value: selectedBarangay,
-                  isExpanded: true,
+                MyDropdown(
+                  name: 'Barangay',
+                  address: barangays,
+                  selectedValue: selectedBarangay,
+                  getLabel: (barangay) => barangay.name,
+                  getValue: (barangay) => barangay.name,
+                  isEnable: true,
+                  filterAddress: (barangay) =>
+                      barangay.cityCode ==
+                      cities
+                          .firstWhereOrNull((city) => city.name == selectedCity)
+                          ?.cityCode,
                   onChanged: (String? newValue) {
                     setState(() {
                       selectedBarangay = newValue;
                     });
                   },
-                  items: barangays
-                      .where((barangay) => barangay.cityCode == selectedCity)
-                      .map((barangay) {
-                    return DropdownMenuItem<String>(
-                      value: barangay.name,
-                      child: Text(barangay.name),
-                    );
-                  }).toList(),
                 ),
 
               const SizedBox(height: 10),
@@ -192,7 +197,38 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                 labelText: 'Street, Building, House Number',
               ),
               const SizedBox(height: 30),
-              PrimaryButton(onTap: () {}, text: 'Submit'),
+              PrimaryButton(
+                  onTap: () async {
+                    if (fullName.text.isNotEmpty &&
+                        phoneNumber.text.isNotEmpty &&
+                        selectedRegion != null &&
+                        selectedProvince != null &&
+                        selectedCity != null &&
+                        selectedBarangay != null) {
+                      final user = AuthService().getCurrentUser();
+                      if (user != null) {
+                        final newCustomerDetails = CustomerDetails(
+                          id: user.uid,
+                          fullName: fullName.text,
+                          phoneNumber: phoneNumber.text,
+                          region: selectedRegion!,
+                          province: selectedProvince!,
+                          city: selectedCity!,
+                          barangay: selectedBarangay!,
+                          postalCode: postalCode.text,
+                          streetBuildingHouseNumber: strtBldgHno.text,
+                        );
+                        await _database.saveCustomerDetails(newCustomerDetails);
+                        Navigator.pop(context, newCustomerDetails);
+                      } else {
+                        Get.snackbar('Error', 'User not logged in');
+                      }
+                    } else {
+                      // Handle the case where fields are empty
+                      Get.snackbar('Error', 'Please fill in all fields');
+                    }
+                  },
+                  text: 'Submit'),
             ],
           ),
         ),

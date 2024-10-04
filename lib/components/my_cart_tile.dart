@@ -46,7 +46,9 @@ class _MyCartTileState extends State<MyCartTile> {
 
                   if (widget.showControls)
                     Padding(
-                      padding: const EdgeInsets.only(top: 16, right: 5), // Add vertical padding, no horizontal
+                      padding: const EdgeInsets.only(
+                          top: 16,
+                          right: 5), // Add vertical padding, no horizontal
                       child: Checkbox(
                         value: widget.isChecked,
                         onChanged: widget.onChanged,
@@ -74,35 +76,43 @@ class _MyCartTileState extends State<MyCartTile> {
                     children: [
                       Text(widget.cartItem.food.name),
                       Text("₱${widget.cartItem.food.price.toString()}"),
+
+                      // Increment or decrement quantity
+                      Padding(
+                        padding: const EdgeInsets.only(top: 7),
+                        child: widget.showControls
+                            ? QuantitySelector(
+                                quantity: widget.cartItem.quantity,
+                                food: widget.cartItem.food,
+                                onIncrement: () {
+                                  restaurant.addToCart(
+                                    widget.cartItem.food,
+                                    widget.cartItem.selectedAddons,
+                                  );
+                                },
+                                onDecrement: () {
+                                  restaurant.removeFromCart(widget.cartItem);
+                                },
+                              )
+                            : Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text('${widget.cartItem.quantity}',
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ),
+                              ),
+                      ),
                     ],
                   ),
                   const Spacer(),
-                  // Increment or decrement quantity
-
-                  widget.showControls
-                      ? QuantitySelector(
-                          quantity: widget.cartItem.quantity,
-                          food: widget.cartItem.food,
-                          onIncrement: () {
-                            restaurant.addToCart(
-                              widget.cartItem.food,
-                              widget.cartItem.selectedAddons,
-                            );
-                          },
-                          onDecrement: () {
-                            restaurant.removeFromCart(widget.cartItem);
-                          },
-                        )
-                      : Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text('x${widget.cartItem.quantity}',
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                          ),
-                        ),
+                  Text("₱${widget.cartItem.totalPrice.toStringAsFixed(2)}",
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      )),
                 ],
               ),
             ),

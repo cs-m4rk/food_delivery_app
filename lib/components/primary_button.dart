@@ -10,6 +10,7 @@ class PrimaryButton extends StatelessWidget {
   final double? fontSize;
   final Color? color;
   final Widget? icon;
+  final SizedBox? spacer;
   final Widget? child;
 
   const PrimaryButton({
@@ -23,6 +24,7 @@ class PrimaryButton extends StatelessWidget {
     this.icon,
     Key? key,
     this.child,
+    this.spacer,
   }) : super(key: key);
 
   @override
@@ -50,6 +52,7 @@ class PrimaryButton extends StatelessWidget {
                     icon!,
                     const SizedBox(width: 5),
                   ],
+                  spacer ?? const SizedBox(),
                   Text(
                     text ?? '',
                     style: TextStyle(

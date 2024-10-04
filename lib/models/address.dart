@@ -34,16 +34,15 @@ class Province {
 
 class City {
   final String name;
-  final String provinceCode;
+  final String provCode;
   final String cityCode;
 
-  City(
-      {required this.name, required this.provinceCode, required this.cityCode});
+  City({required this.name, required this.provCode, required this.cityCode});
 
   factory City.fromJson(Map<String, dynamic> json) {
     return City(
       name: json['name'] ?? '',
-      provinceCode: json['prov_code'] ?? '',
+      provCode: json['prov_code'] ?? '',
       cityCode: json['mun_code'] ?? '',
     );
   }

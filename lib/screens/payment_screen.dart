@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/components/export_components/login_components.dart';
 import 'package:food_delivery_app/components/my_cart_tile.dart';
+import 'package:food_delivery_app/components/my_container.dart';
 import 'package:food_delivery_app/models/cart_item.dart';
+import 'package:food_delivery_app/models/customer_details.dart';
+import 'package:food_delivery_app/models/restaurant.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
+import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
+import 'package:provider/provider.dart';
 
 class PaymentScreen extends StatefulWidget {
   final List<CartItem> selectedItems;
@@ -15,7 +20,20 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  int _selectedPaymentMethod = 0; // State to manage selected payment method
+  int _selectedPaymentMethod = 0;
+  CustomerDetails? _selectedCustomerDetails;
+
+  Future<void> _placeOrder() async {
+    final currentUser = AuthService().getCurrentUser();
+
+    if (currentUser != null) {
+      final userId = currentUser.uid;
+      await context.read<Restaurant>().placeOrder(userId);
+      Navigator.pushNamed(context, AppRoutes.purchased);
+    } else {
+      Navigator.pushNamed(context, AppRoutes.login);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,39 +47,57 @@ class _PaymentScreenState extends State<PaymentScreen> {
         child: Column(
           children: [
             InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, AppRoutes.address);
+              onTap: () async {
+                // Navigate to AddressScreen and get the selected CustomerDetails
+                final selectedDetails = await Navigator.pushNamed(
+                  context,
+                  AppRoutes.address,
+                ) as CustomerDetails?;
+
+                // Update the state only if a new address was selected
+                if (selectedDetails != null) {
+                  setState(() {
+                    _selectedCustomerDetails =
+                        selectedDetails; // Update the selected details
+                  });
+                }
               },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.kWhiteColor,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                padding: const EdgeInsets.all(8.0),
+              child: MyContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Payment Methods",
+                      "Customer Details",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
-                    Row(
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 4.0,
                       children: [
-                        Icon(
-                          Icons.location_on,
-                          color: AppColors.kPrimary,
-                        ),
-                        const SizedBox(width: 5),
-                        Text('Delivery Address'),
+                        if (_selectedCustomerDetails != null) ...[
+                          Text(_selectedCustomerDetails!.fullName),
+                          Text(_selectedCustomerDetails!.phoneNumber),
+                          Text(_selectedCustomerDetails!.region),
+                          Text(_selectedCustomerDetails!.province),
+                          Text(_selectedCustomerDetails!.city),
+                          Text(_selectedCustomerDetails!.barangay),
+                          Text(_selectedCustomerDetails!.postalCode),
+                          Text(_selectedCustomerDetails!
+                              .streetBuildingHouseNumber),
+                        ] else ...[
+                          Center(
+                            child: Text('No address selected'),
+                          )
+                        ],
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
             ),
+            const SizedBox(height: 20),
             ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
@@ -76,13 +112,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 );
               },
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.kWhiteColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              padding: const EdgeInsets.all(8.0),
+            MyContainer(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -90,30 +120,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     "Payment Methods",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                  const SizedBox(height: 10),
                   Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Cash on Delivery'),
+                          const Text('Cash on Delivery'),
                           Radio(
                             value: 0,
-                            groupValue: _selectedPaymentMethod,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedPaymentMethod = value!;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Gcash'),
-                          Radio(
-                            value: 1,
                             groupValue: _selectedPaymentMethod,
                             onChanged: (value) {
                               setState(() {
@@ -128,13 +142,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ],
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.kWhiteColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              padding: const EdgeInsets.all(8.0),
+            MyContainer(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -168,7 +176,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-              child: PrimaryButton(onTap: () {}, text: "Place Order"),
+              child: PrimaryButton(onTap: _placeOrder, text: "Place Order"),
             ),
           ],
         ),

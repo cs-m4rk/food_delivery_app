@@ -2,6 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/models/cart_item.dart';
 import 'package:food_delivery_app/models/food.dart';
+import 'package:food_delivery_app/services/database/database.dart';
+import 'package:uuid/uuid.dart';
 
 class Restaurant extends ChangeNotifier {
   final List<Food> _menu = [
@@ -98,7 +100,7 @@ class Restaurant extends ChangeNotifier {
     ),
 
     // fries
-   /* Food(
+    /* Food(
       imagePath: 'assets/foods/fries/fries1.jpg',
       category: FoodCategory.fries,
       name: 'wtf fries',
@@ -237,7 +239,6 @@ class Restaurant extends ChangeNotifier {
     ),
 
     */
-
   ];
 
   /**
@@ -253,6 +254,8 @@ class Restaurant extends ChangeNotifier {
    */
   // user cart
   final List<CartItem> _cart = [];
+  final Database _database = Database();
+  final Uuid _uuid = Uuid();
 
   // Add to cart
   void addToCart(Food food, List<Addon> selectedAddons) {
@@ -327,11 +330,12 @@ class Restaurant extends ChangeNotifier {
     notifyListeners();
   }
 
-  /**
-   * H E L P E R S
-   */
+  // place order
+  Future<void> placeOrder(String userId) async {
+    String orderId = _uuid.v4();
+    double totalPrice = getTotalPrice();
+    await _database.saveOrderDetails(userId, orderId, _cart, totalPrice);
+  }
 
-  // generate receipt
-  // format double value into money
-  // format list of addons into a string summary
+  //
 }
