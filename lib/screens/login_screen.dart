@@ -100,7 +100,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         User? user = await AuthService().signInWithGoogle();
 
                         if (user != null) {
-                          Navigator.pushNamed(context, AppRoutes.home);
+
+
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushReplacementNamed(context, AppRoutes.home);
                         }
                         // Navigate to HomePage and pass the user information
                       },

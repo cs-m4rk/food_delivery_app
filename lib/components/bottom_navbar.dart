@@ -32,7 +32,6 @@ class _BottomNavbarState extends State<BottomNavbar> {
     super.dispose();
   }
 
-  // Fetch the current user from Firebase and create a UserModel instance
   Future<void> _getCurrentUser() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
@@ -45,6 +44,8 @@ class _BottomNavbarState extends State<BottomNavbar> {
       });
     }
   }
+
+  // Fetch the current user from Firebase and create a UserModel instance
 
   void _onItemTapped(int index) {
     setState(() {
@@ -67,21 +68,19 @@ class _BottomNavbarState extends State<BottomNavbar> {
           const HomeScreen(),
           const CartScreen(),
           const PurchasedScreen(),
-          // Only show ProfileScreen if _userModel is not null
-          if (_userModel != null)
-            ProfileScreen(userModel: _userModel!)
-          else
-            const Center(child: CircularProgressIndicator()), // Loading indicator until user data is fetched
+          ProfileScreen(userModel: _userModel!),
+
+          // Loading indicator until user data is fetched
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 20,
-        type: BottomNavigationBarType.fixed, 
+        type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
-        backgroundColor: Colors.white, 
-        selectedItemColor: AppColors.kPrimary, 
-        unselectedItemColor: AppColors.kGreyColor, 
+        backgroundColor: Colors.white,
+        selectedItemColor: AppColors.kPrimary,
+        unselectedItemColor: AppColors.kGreyColor,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

@@ -3,13 +3,13 @@ import 'package:food_delivery_app/models/user_model.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/update_profile_screen.dart';
+import 'package:food_delivery_app/services/auth/auth_service.dart';
 
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class ProfileScreen extends StatelessWidget {
-
   final UserModel userModel;
 
   const ProfileScreen({Key? key, required this.userModel}) : super(key: key);
@@ -20,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, AppRoutes.home);
             },
             icon: const Icon(LineAwesomeIcons.angle_left_solid),
           ),
@@ -36,10 +36,11 @@ class ProfileScreen extends StatelessWidget {
                     width: 120,
                     height: 120,
                     child: ClipOval(
-                        child: userModel.photoURL != null
-                        ? Image.network(userModel.photoURL!, fit: BoxFit.cover)
-                        : Image.asset('assets/images/default_profile.png',
-                            fit: BoxFit.cover),
+                      child: userModel.photoURL != null
+                          ? Image.network(userModel.photoURL!,
+                              fit: BoxFit.cover)
+                          : Image.asset('assets/images/default_profile.png',
+                              fit: BoxFit.cover),
                     ),
                   ),
                   Positioned(
@@ -66,14 +67,16 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-             Text(
-              userModel.displayName ?? 'No Name',
-              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              userModel.email ?? 'No Email',
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-            ),
+              Text(
+                userModel.displayName ?? 'No Name',
+                style:
+                    const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                userModel.email ?? 'No Email',
+                style:
+                    const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(
                 height: 20,
               ),
@@ -121,7 +124,12 @@ class ProfileScreen extends StatelessWidget {
               ProfileMenuWidget(
                 title: 'Logout',
                 icon: LineAwesomeIcons.sign_out_alt_solid,
-                onPress: () {},
+                onPress: () async {
+                  await AuthService().logout(); // Perform the logout
+                  if (AuthService().getCurrentUser() == null) {
+                    Navigator.pushNamed(context, AppRoutes.login);
+                  }
+                },
                 endIcon: false,
                 textColor: Colors.red,
               )

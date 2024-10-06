@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,8 +9,8 @@ import 'package:food_delivery_app/screens/login_screen.dart';
 import '/screens/onboarding/components/custom_indicator.dart';
 import '/screens/onboarding/components/onboarding_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:get/get.dart';
+import 'package:food_delivery_app/screens/home_screen.dart'; // Adjusted to BottomNavbar
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -24,8 +25,34 @@ class _OnboardingViewState extends State<OnboardingView> {
     prefs.setBool('onboardingComplete', true);
   }
 
+  Future<void> _checkOnboardingStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isOnboardingComplete = prefs.getBool('onboardingComplete') ?? false;
+
+    if (isOnboardingComplete) {
+      _checkAuthenticationStatus();
+    }
+  }
+
+  Future<void> _checkAuthenticationStatus() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomeScreen())); // Go to home
+    } else {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const LoginScreen())); // Go to login
+    }
+  }
+
   PageController pageController = PageController();
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkOnboardingStatus();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +60,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         statusBarColor: Colors.transparent,
         statusBarBrightness: Brightness.dark,
         statusBarIconBrightness: Brightness.dark));
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -63,7 +91,11 @@ class _OnboardingViewState extends State<OnboardingView> {
               onTap: () {
                 if (currentIndex == (onboardingList.length - 1)) {
                   completeOnboarding();
-                  Navigator.pushNamed(context, AppRoutes.login);
+                  _checkAuthenticationStatus();  // After completing onboarding, check auth
+                } else {
+                  pageController.nextPage(
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.ease);
                 }
               },
               text: currentIndex == (onboardingList.length - 1)

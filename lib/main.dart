@@ -3,14 +3,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/models/restaurant.dart';
+import 'package:food_delivery_app/screens/home_screen.dart';
+import 'package:food_delivery_app/screens/onboarding/onboarding_view.dart';
 import 'package:food_delivery_app/wrapper.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,12 +31,14 @@ void main() async {
   );
 }
 
+
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-  return ScreenUtilInit(
+    return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) {
         return GestureDetector(
@@ -51,11 +53,14 @@ class MyApp extends StatelessWidget {
                 .copyWith(physics: const BouncingScrollPhysics()),
             defaultTransition: Transition.fadeIn,
             locale: const Locale('en_US'),
-          home: const Wrapper(),
+            home: const OnboardingView(),
+            routes: {
+              '/home': (context) => const HomeScreen(),
+              '/loginpage': (context) => const HomeScreen(),
+            },
           ),
         );
       },
-
     );
   }
 }

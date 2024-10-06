@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/components/bottom_navbar.dart';
 import 'package:food_delivery_app/screens/address_screen.dart';
 import 'package:food_delivery_app/screens/cart_screen.dart';
+import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
 import 'package:food_delivery_app/screens/onboarding/onboarding_view.dart';
 import 'package:food_delivery_app/screens/profile_screen.dart';
@@ -9,7 +10,7 @@ import 'package:food_delivery_app/screens/register_screen.dart';
 import 'package:food_delivery_app/screens/update_profile_screen.dart';
 
 class AppRoutes {
-  static const String login = '/';
+  static const String login = '/login';
   static const String register = '/register';
   static const String home = '/home';
   static const String food = '/food';
@@ -25,7 +26,7 @@ class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case home:
-        return MaterialPageRoute(builder: (_) => BottomNavbar());
+        return MaterialPageRoute(builder: (_) => HomeScreen());
       case login:
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case register:

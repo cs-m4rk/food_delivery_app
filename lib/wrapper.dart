@@ -52,8 +52,7 @@ class _WrapperState extends State<Wrapper> {
             photoURL: user?.photoURL,
           );
 
-          // Pass the UserModel to the BottomNavbar instead of ProfileScreen
-          return ProfileScreen(userModel: userModel);
+          return HomeScreen();
         } else {
           return _isOnboardingComplete
               ? const LoginScreen()

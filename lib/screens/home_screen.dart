@@ -6,12 +6,13 @@ import 'package:food_delivery_app/components/my_sliverbar.dart';
 import 'package:food_delivery_app/components/my_tabbar.dart';
 import 'package:food_delivery_app/models/food.dart';
 import 'package:food_delivery_app/models/restaurant.dart';
+import 'package:food_delivery_app/models/user_model.dart';
 import 'package:food_delivery_app/screens/food_screen.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
