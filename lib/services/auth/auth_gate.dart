@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/components/bottom_navbar.dart';
+import 'package:food_delivery_app/screens/address_screen.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
 import 'package:food_delivery_app/screens/payment_screen.dart';
 
@@ -16,7 +17,7 @@ class AuthGate extends StatelessWidget {
           // user is logged in
 
           if (snapshot.hasData) {
-            return const PaymentScreen(selectedItems: [],);
+            return const BottomNavbar();
           }
           // user is not logged in
           else {

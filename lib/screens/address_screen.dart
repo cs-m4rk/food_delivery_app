@@ -14,22 +14,7 @@ class AddressScreen extends StatefulWidget {
 }
 
 class _AddressScreenState extends State<AddressScreen> {
-  List<CustomerDetails> _customerDetails = [];
-
-  Future<void> _getCustomerDetails() async {
-    // Get customer details from the database
-    Database db = Database();
-    List<CustomerDetails> customerDetails = await db.getCustomerDetails();
-    setState(() {
-      _customerDetails = customerDetails;
-    });
-  }
-
-  @override
-  void initState() {
-    _getCustomerDetails();
-    super.initState();
-  }
+  final Database db = Database();
 
   @override
   Widget build(BuildContext context) {
@@ -38,72 +23,90 @@ class _AddressScreenState extends State<AddressScreen> {
       appBar: AppBar(
         title: const Text('Address Selection'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            if (_customerDetails.isNotEmpty) ...[
-              for (int i = 0; i < _customerDetails.length; i++) ...[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context, _customerDetails[i]);
-                  },
-                  child: MyContainer(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Wrap(
-                                spacing: 8.0,
-                                runSpacing: 4.0,
-                                children: [
-                                  Text(_customerDetails[i].fullName),
-                                  Text(_customerDetails[i].phoneNumber),
-                                  Text(_customerDetails[i].region),
-                                  Text(_customerDetails[i].province),
-                                  Text(_customerDetails[i].city),
-                                  Text(_customerDetails[i].barangay),
-                                  Text(_customerDetails[i].postalCode),
-                                  Text(_customerDetails[i]
-                                      .streetBuildingHouseNumber),
-                                ],
+      body: FutureBuilder<List<CustomerDetails>>(
+        future: db.getCustomerDetails(), // Fetch customer details
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No addresses found.'));
+          }
+
+          final customerDetails = snapshot.data!;
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                for (int i = 0; i < customerDetails.length; i++) ...[
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context, customerDetails[i]);
+                    },
+                    child: MyContainer(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Wrap(
+                                  spacing: 8.0,
+                                  runSpacing: 4.0,
+                                  children: [
+                                    Text(customerDetails[i].fullName),
+                                    Text(customerDetails[i].phoneNumber),
+                                    Text(customerDetails[i].region),
+                                    Text(customerDetails[i].province),
+                                    Text(customerDetails[i].city),
+                                    Text(customerDetails[i].barangay),
+                                    Text(customerDetails[i].postalCode),
+                                    Text(customerDetails[i]
+                                        .streetBuildingHouseNumber),
+                                  ],
+                                ),
                               ),
-                            ),
-                            PrimaryTextButton(onPressed: () {}, title: 'Edit')
-                          ],
-                        ),
-                      ],
+                              PrimaryTextButton(
+                                  onPressed: () {
+                                    // Pass the selected customer details as arguments
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRoutes.editAddress,
+                                      arguments: customerDetails[i],
+                                    );
+                                  },
+                                  title: 'Edit')
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                ],
+                const SizedBox(height: 10),
+                const SizedBox(height: 20),
+                PrimaryButton(
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.newAddress)
+                        .then((value) {
+                      if (value != null && value is CustomerDetails) {
+                        setState(() {
+                          customerDetails.add(value);
+                        });
+                      }
+                    });
+                  },
+                  text: 'Add Address',
+                  spacer: const SizedBox(width: 5),
+                  icon: const Icon(Icons.add_circle, color: Colors.white),
                 ),
               ],
-              const SizedBox(height: 10),
-            ] else ...[
-             Container()
-            ],
-            const SizedBox(height: 20),
-            PrimaryButton(
-              onTap: () {
-                Navigator.pushNamed(context, AppRoutes.newAddress)
-                    .then((value) {
-                  if (value != null && value is CustomerDetails) {
-                    setState(() {
-                      _customerDetails.add(value);
-                    });
-                  }
-                });
-              },
-              text: 'Add Address',
-              spacer: const SizedBox(
-                width: 5,
-              ),
-              icon: const Icon(Icons.add_circle, color: Colors.white),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

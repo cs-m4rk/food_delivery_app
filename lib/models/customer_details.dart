@@ -1,16 +1,18 @@
 class CustomerDetails {
-  final String id;
-  final String fullName;
-  final String phoneNumber;
-  final String region;
-  final String province;
-  final String city;
-  final String barangay;
-  final String postalCode;
-  final String streetBuildingHouseNumber;
+  String? documentId; // Add this field
+  String userId;
+  String fullName;
+  String phoneNumber;
+  String region;
+  String province;
+  String city;
+  String barangay;
+  String postalCode;
+  String streetBuildingHouseNumber;
 
   CustomerDetails({
-    required this.id,
+    this.documentId,
+    required this.userId,
     required this.fullName,
     required this.phoneNumber,
     required this.region,
@@ -23,7 +25,8 @@ class CustomerDetails {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'documentId': documentId, // Include documentId if needed
+      'userId': userId,
       'fullName': fullName,
       'phoneNumber': phoneNumber,
       'region': region,
@@ -37,7 +40,8 @@ class CustomerDetails {
 
   factory CustomerDetails.fromMap(Map<String, dynamic> map) {
     return CustomerDetails(
-      id: map['id'],
+      documentId: map['documentId'], // Capture documentId from map if needed
+      userId: map['userId'],
       fullName: map['fullName'],
       phoneNumber: map['phoneNumber'],
       region: map['region'],

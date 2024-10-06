@@ -3,6 +3,7 @@ import 'package:food_delivery_app/components/export_components/login_components.
 import 'package:food_delivery_app/components/my_cart_tile.dart';
 import 'package:food_delivery_app/models/restaurant.dart';
 import 'package:food_delivery_app/screens/payment_screen.dart';
+import 'package:food_delivery_app/services/database/database.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   List<bool> _checkedItems = [];
+
 
   @override
   Widget build(BuildContext context) {

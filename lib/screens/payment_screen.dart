@@ -4,9 +4,12 @@ import 'package:food_delivery_app/components/my_cart_tile.dart';
 import 'package:food_delivery_app/components/my_container.dart';
 import 'package:food_delivery_app/models/cart_item.dart';
 import 'package:food_delivery_app/models/customer_details.dart';
+import 'package:food_delivery_app/models/order_details.dart';
 import 'package:food_delivery_app/models/restaurant.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
+import 'package:food_delivery_app/screens/orders_screen.dart';
 import 'package:food_delivery_app/services/auth/auth_service.dart';
+import 'package:food_delivery_app/services/database/database.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:provider/provider.dart';
 
@@ -22,21 +25,15 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   int _selectedPaymentMethod = 0;
   CustomerDetails? _selectedCustomerDetails;
-
-  Future<void> _placeOrder() async {
-    final currentUser = AuthService().getCurrentUser();
-
-    if (currentUser != null) {
-      final userId = currentUser.uid;
-      await context.read<Restaurant>().placeOrder(userId);
-      Navigator.pushNamed(context, AppRoutes.purchased);
-    } else {
-      Navigator.pushNamed(context, AppRoutes.login);
-    }
-  }
+  final Database _database = Database();
 
   @override
   Widget build(BuildContext context) {
+    final restaurant = Provider.of<Restaurant>(context);
+    final subTotalPrice = restaurant.getTotalPrice();
+    final shippingFee = 10.00;
+    final totalPrice = subTotalPrice + shippingFee;
+
     return Scaffold(
       backgroundColor: AppColors.kBackground,
       appBar: AppBar(
@@ -66,7 +63,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Customer Details",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -87,7 +84,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           Text(_selectedCustomerDetails!
                               .streetBuildingHouseNumber),
                         ] else ...[
-                          Center(
+                          const Center(
                             child: Text('No address selected'),
                           )
                         ],
@@ -97,10 +94,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: widget.selectedItems.length,
               itemBuilder: (context, index) {
                 final cartItem = widget.selectedItems[index];
@@ -116,7 +113,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Payment Methods",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
@@ -137,6 +134,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ),
                         ],
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Gcash'),
+                          Radio(
+                            value: 1,
+                            groupValue: _selectedPaymentMethod,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedPaymentMethod = value!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ],
@@ -146,7 +158,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Order Summary",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
@@ -154,19 +166,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
+                      const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Shipping Subtotal'),
+                          Text('Shipping fee'),
                           Text('Merchandise Subtotal'),
                           Text('Total Payment'),
                         ],
                       ),
                       Column(
                         children: [
-                          Text('\$10.00'),
-                          Text('\$50.00'),
-                          Text('\$60.00'),
+                          Text('₱${shippingFee.toStringAsFixed(2)}'),
+                          Text('₱${subTotalPrice.toStringAsFixed(2)}'),
+                          Text('₱${totalPrice.toStringAsFixed(2)}'),
                         ],
                       ),
                     ],
@@ -176,7 +188,33 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-              child: PrimaryButton(onTap: _placeOrder, text: "Place Order"),
+              child: PrimaryButton(
+                  onTap: () {
+                    final userId = AuthService().getCurrentUser()!.uid;
+                    final orderDetails = OrderDetails(
+                        userId: userId,
+                        cartItems: widget.selectedItems,
+                        customerDetails: _selectedCustomerDetails!,
+                        paymentMethod: _selectedPaymentMethod == 0
+                            ? 'Cash on Delivery'
+                            : 'Gcash',
+                        totalPrice: totalPrice,
+                        shippingFee: shippingFee,
+                        subTotalPrice: subTotalPrice,
+                        createdAt: DateTime.now());
+
+                    _database.saveOrderDetails(orderDetails);
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OrdersScreen(
+                          selectedItems: widget.selectedItems,
+                        ),
+                      ),
+                    );
+                  },
+                  text: "Place Order"),
             ),
           ],
         ),

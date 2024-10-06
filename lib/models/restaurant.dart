@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/models/cart_item.dart';
 import 'package:food_delivery_app/models/food.dart';
+import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/services/database/database.dart';
 import 'package:uuid/uuid.dart';
 
@@ -255,10 +256,10 @@ class Restaurant extends ChangeNotifier {
   // user cart
   final List<CartItem> _cart = [];
   final Database _database = Database();
-  final Uuid _uuid = Uuid();
+
 
   // Add to cart
-  void addToCart(Food food, List<Addon> selectedAddons) {
+  void addToCart(Food food, List<Addon> selectedAddons) async {
     // see if there is a cart item already with the same food and selected addons
     CartItem? cartItem = _cart.firstWhereOrNull((item) {
       // check if the food items are the same
@@ -280,6 +281,15 @@ class Restaurant extends ChangeNotifier {
         CartItem(food: food, selectedAddons: selectedAddons),
       );
     }
+
+    final user = AuthService().getCurrentUser();
+
+    try {
+      await _database.saveCartDetails(user!.uid, _cart);
+    } catch (e) {
+      throw Exception('Failed to save cart details');
+    }
+
     notifyListeners();
   }
 
@@ -291,6 +301,8 @@ class Restaurant extends ChangeNotifier {
       if (_cart[cartIndex].quantity > 1) {
         _cart[cartIndex].quantity--;
       } else {
+        final user = AuthService().getCurrentUser();
+        _database.removeCartDetails(user!.uid, cartIndex);
         _cart.removeAt(cartIndex);
       }
     }
@@ -326,16 +338,14 @@ class Restaurant extends ChangeNotifier {
 
   // clear cart
   void clearCart() {
+    final user = AuthService().getCurrentUser();
+    _database.removeAllCartDetails(user!.uid);
     _cart.clear();
     notifyListeners();
   }
 
   // place order
-  Future<void> placeOrder(String userId) async {
-    String orderId = _uuid.v4();
-    double totalPrice = getTotalPrice();
-    await _database.saveOrderDetails(userId, orderId, _cart, totalPrice);
-  }
+
 
   //
 }

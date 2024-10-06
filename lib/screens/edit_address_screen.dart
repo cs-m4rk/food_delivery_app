@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
@@ -8,20 +6,19 @@ import 'package:food_delivery_app/components/my_dropdown.dart';
 import 'package:food_delivery_app/components/primary_textformfield.dart';
 import 'package:food_delivery_app/models/address.dart';
 import 'package:food_delivery_app/models/customer_details.dart';
-import 'package:food_delivery_app/routes/app_routes.dart';
 import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/services/database/database.dart';
 import 'package:get/get.dart';
 
-class NewAddressScreen extends StatefulWidget {
+class EditAddressScreen extends StatefulWidget {
   final CustomerDetails? customerDetails;
-  const NewAddressScreen({super.key, this.customerDetails});
+  const EditAddressScreen({super.key, this.customerDetails});
 
   @override
-  State<NewAddressScreen> createState() => _NewAddressScreenState();
+  State<EditAddressScreen> createState() => _EditAddressScreenState();
 }
 
-class _NewAddressScreenState extends State<NewAddressScreen> {
+class _EditAddressScreenState extends State<EditAddressScreen> {
   TextEditingController fullName = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();
   TextEditingController postalCode = TextEditingController();
@@ -99,7 +96,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Address'),
+        title: const Text('Edit Address'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -235,8 +232,10 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                         selectedBarangay != null) {
                       final user = AuthService().getCurrentUser();
                       final userId = user!.uid;
-                      final newCustomerDetails = CustomerDetails(
+                      final documentId = widget.customerDetails?.documentId;
+                      final updatedCustomerDetails = CustomerDetails(
                         userId: userId,
+                        documentId: documentId,
                         fullName: fullName.text,
                         phoneNumber: phoneNumber.text,
                         region: selectedRegion!,
@@ -246,9 +245,16 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                         postalCode: postalCode.text,
                         streetBuildingHouseNumber: strtBldgHno.text,
                       );
-                      await _database.saveCustomerDetails(
-                          userId, newCustomerDetails);
-                      Navigator.pop(context, newCustomerDetails);
+
+                      if (documentId != null) {
+                        await Database().updateCustomerDetails(
+                            documentId, updatedCustomerDetails);
+                        Navigator.pop(context, updatedCustomerDetails);
+                      } else {
+                        // Handle case where documentId is null (shouldn't happen if data is fetched correctly)
+                        Get.snackbar('Error', 'Customer details not found');
+                      }
+                      Navigator.pop(context, updatedCustomerDetails);
                     } else {
                       // Handle the case where fields are empty
                       Get.snackbar('Error', 'Please fill in all fields');

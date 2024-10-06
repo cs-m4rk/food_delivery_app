@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/screens/cart_screen.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/profile_screen.dart';
-import 'package:food_delivery_app/screens/purchased_screen.dart';
+import 'package:food_delivery_app/screens/orders_screen.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 
 class BottomNavbar extends StatefulWidget {
@@ -48,18 +48,20 @@ class _BottomNavbarState extends State<BottomNavbar> {
         children: const [
           HomeScreen(),
           CartScreen(),
-          PurchasedScreen(),
+          OrdersScreen(
+            selectedItems: [],
+          ),
           ProfileScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 20,
-        type: BottomNavigationBarType.fixed, 
+        type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
-        backgroundColor: Colors.white, 
-        selectedItemColor: AppColors.kPrimary, 
-        unselectedItemColor: AppColors.kGreyColor, 
+        backgroundColor: Colors.white,
+        selectedItemColor: AppColors.kPrimary,
+        unselectedItemColor: AppColors.kGreyColor,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
