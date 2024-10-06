@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/models/user_model.dart'; // Import your UserModel
+import 'package:food_delivery_app/models/user_model.dart';
 import 'package:food_delivery_app/screens/cart_screen.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/profile_screen.dart';
@@ -23,7 +23,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
-    _getCurrentUser(); // Fetch the current user data
+    _getCurrentUser();
   }
 
   @override
@@ -44,8 +44,6 @@ class _BottomNavbarState extends State<BottomNavbar> {
       });
     }
   }
-
-  // Fetch the current user from Firebase and create a UserModel instance
 
   void _onItemTapped(int index) {
     setState(() {
@@ -69,8 +67,6 @@ class _BottomNavbarState extends State<BottomNavbar> {
           const CartScreen(),
           const PurchasedScreen(),
           ProfileScreen(userModel: _userModel!),
-
-          // Loading indicator until user data is fetched
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

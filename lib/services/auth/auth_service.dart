@@ -4,7 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-    final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   //login
   Future<UserCredential> login(String email, String password) async {
@@ -44,30 +44,30 @@ class AuthService {
     }
   }
 
- Future<User?> signInWithGoogle() async {
-  try {
-    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-    if (googleUser == null) {
-      return null;  // User canceled the sign-in
+  Future<User?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        return null; // User canceled the sign-in
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
+      return userCredential.user;
+    } catch (e) {
+      print("Error during Google Sign-In: $e");
+      return null;
     }
-
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    final OAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
-    return userCredential.user;
-  } catch (e) {
-    print("Error during Google Sign-In: $e");
-    return null;
   }
 
-  
-}
-
-  Stream<UserModel?> get userStream {
+    Stream<UserModel?> get userStream {
     return _firebaseAuth.authStateChanges().map((User? user) {
       if (user != null) {
         // If logged in, convert to UserModel

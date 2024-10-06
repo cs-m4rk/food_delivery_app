@@ -36,10 +36,11 @@ class ProfileScreen extends StatelessWidget {
                     width: 120,
                     height: 120,
                     child: ClipOval(
+
                       child: userModel.photoURL != null
                           ? Image.network(userModel.photoURL!,
                               fit: BoxFit.cover)
-                          : Image.asset('assets/images/default_profile.png',
+                          : Image.asset('user.png',
                               fit: BoxFit.cover),
                     ),
                   ),
@@ -68,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                userModel.displayName ?? 'No Name',
+                userModel.displayName ?? 'User',
                 style:
                     const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),

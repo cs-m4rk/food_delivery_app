@@ -5,12 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/models/restaurant.dart';
 import 'package:food_delivery_app/screens/home_screen.dart';
 import 'package:food_delivery_app/screens/onboarding/onboarding_view.dart';
-import 'package:food_delivery_app/wrapper.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: GetMaterialApp(
-            title: 'Food Delivery App',
+            title: 'Foochi- Food App',
             debugShowCheckedModeBanner: false,
             scrollBehavior: const ScrollBehavior()
                 .copyWith(physics: const BouncingScrollPhysics()),

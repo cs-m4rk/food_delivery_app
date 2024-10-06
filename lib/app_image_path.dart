@@ -7,8 +7,4 @@ class AppImagePath {
   static String kOnboardingFirst = 'assets/onboarding-first.png';
   static String kOnboardingSecond = 'assets/onboarding-second.png';
   static String kOnboardingThird = 'assets/onboarding-third.png';
-
-
-
-  
 }

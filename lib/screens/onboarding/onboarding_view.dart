@@ -25,25 +25,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     prefs.setBool('onboardingComplete', true);
   }
 
-  Future<void> _checkOnboardingStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isOnboardingComplete = prefs.getBool('onboardingComplete') ?? false;
-
-    if (isOnboardingComplete) {
-      _checkAuthenticationStatus();
-    }
-  }
-
-  Future<void> _checkAuthenticationStatus() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeScreen())); // Go to home
-    } else {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const LoginScreen())); // Go to login
-    }
-  }
+  
 
   PageController pageController = PageController();
   int currentIndex = 0;
@@ -51,7 +33,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   @override
   void initState() {
     super.initState();
-    _checkOnboardingStatus();
+   
   }
 
   @override
@@ -91,7 +73,8 @@ class _OnboardingViewState extends State<OnboardingView> {
               onTap: () {
                 if (currentIndex == (onboardingList.length - 1)) {
                   completeOnboarding();
-                  _checkAuthenticationStatus();  // After completing onboarding, check auth
+                  Navigator.pushNamed(context, AppRoutes.login);
+                  // After completing onboarding, check auth
                 } else {
                   pageController.nextPage(
                       duration: Duration(milliseconds: 500),

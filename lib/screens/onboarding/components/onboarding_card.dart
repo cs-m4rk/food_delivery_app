@@ -28,7 +28,7 @@ class OnBoardingCard extends StatelessWidget {
             const Spacer(),
             RichText(
               textAlign: TextAlign.center,
-              text: TextSpan( children: [
+              text: TextSpan(children: [
                 TextSpan(
                   text: onBoarding.title,
                   style: TextStyle(
@@ -42,7 +42,6 @@ class OnBoardingCard extends StatelessWidget {
             Text(
               onBoarding.description,
               textAlign: TextAlign.center,
-             
             ),
             SizedBox(height: 40.h),
           ],

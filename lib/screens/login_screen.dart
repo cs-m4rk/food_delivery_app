@@ -8,7 +8,6 @@ import 'package:food_delivery_app/routes/app_routes.dart';
 import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:food_delivery_app/components/export_components/login_components.dart';
-import 'package:food_delivery_app/wrapper.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -98,14 +97,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     SecondaryButton(
                       onTap: () async {
                         User? user = await AuthService().signInWithGoogle();
-
-                        if (user != null) {
-
-
-                          // ignore: use_build_context_synchronously
-                          Navigator.pushReplacementNamed(context, AppRoutes.home);
-                        }
-                        // Navigate to HomePage and pass the user information
                       },
                       borderRadius: 8,
                       height: 60,

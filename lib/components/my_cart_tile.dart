@@ -127,7 +127,7 @@ class _MyCartTileState extends State<MyCartTile> {
                             ),
                             shape: StadiumBorder(),
                             onSelected: (value) {},
-                            backgroundColor: Colors.grey.shade100,
+                            backgroundColor: AppColors.kBackground.withOpacity(0.1),
                             labelStyle: const TextStyle(
                               fontSize: 12,
                             ),

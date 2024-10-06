@@ -29,7 +29,7 @@ class UpdateProfileScreen extends StatelessWidget {
                 width: 120,
                 height: 120,
                 child: ClipRect(
-                  child: Image.asset('assets/images/profile.jpg',
+                  child: Image.asset('user.png',
                       fit: BoxFit.cover),
                 ),
               ),
