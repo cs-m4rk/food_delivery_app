@@ -4,10 +4,11 @@ import 'package:food_delivery_app/models/cart_item.dart';
 import 'package:food_delivery_app/models/food.dart';
 import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/services/database/database.dart';
-import 'package:uuid/uuid.dart';
 
 class Restaurant extends ChangeNotifier {
   final List<Food> _menu = [
+ 
+
     //burgers
     Food(
       imagePath: 'assets/foods/burgers/burger1.jpg',
@@ -257,7 +258,6 @@ class Restaurant extends ChangeNotifier {
   final List<CartItem> _cart = [];
   final Database _database = Database();
 
-
   // Add to cart
   void addToCart(Food food, List<Addon> selectedAddons) async {
     // see if there is a cart item already with the same food and selected addons
@@ -345,7 +345,6 @@ class Restaurant extends ChangeNotifier {
   }
 
   // place order
-
 
   //
 }

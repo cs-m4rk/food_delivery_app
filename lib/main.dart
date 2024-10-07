@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: GetMaterialApp(
-            title: 'Foochi- Food App',
+            title: 'Foochi Food App',
             debugShowCheckedModeBanner: false,
             scrollBehavior: const ScrollBehavior()
                 .copyWith(physics: const BouncingScrollPhysics()),
@@ -51,6 +51,9 @@ class MyApp extends StatelessWidget {
             locale: const Locale('en_US'),
             onGenerateRoute: AppRoutes.generateRoute,
             home: const AuthGate(),
+            theme: ThemeData(
+              fontFamily: 'Poppins',
+            ),
           ),
         );
       },

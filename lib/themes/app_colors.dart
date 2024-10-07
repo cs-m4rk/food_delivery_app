@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static const Color kPrimary = Color.fromARGB(156, 138, 2, 138);
-  static const Color kSecondary = Color(0xFF3F2D20);
-  static const Color kBackground = Color.fromARGB(255, 235, 235, 235);
+  static const Color kSecondary = Color.fromARGB(255, 133, 23, 152);
+  static const Color kBackground = Color.fromARGB(255, 245, 249, 255);
   static const Color kOrange = Color(0xFFEF8829);
   static const Color kLine = Color.fromARGB(255, 128, 126, 127);
   static Color kGreyColor = const Color(0XFF939999);

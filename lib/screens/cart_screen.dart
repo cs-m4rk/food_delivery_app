@@ -17,7 +17,6 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   List<bool> _checkedItems = [];
 
-
   @override
   Widget build(BuildContext context) {
     return Consumer<Restaurant>(

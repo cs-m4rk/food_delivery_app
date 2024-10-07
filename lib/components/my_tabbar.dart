@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/models/food.dart';
+import 'package:food_delivery_app/themes/app_colors.dart';
 
 class MyTabbar extends StatelessWidget {
   const MyTabbar({super.key, required this.tabController});
@@ -18,6 +19,7 @@ class MyTabbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: TabBar(
+        dividerColor: AppColors.kBackground,
         controller: tabController,
         tabs: _buildCategoryTabs(),
       ),

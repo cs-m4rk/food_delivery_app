@@ -56,7 +56,7 @@ class _FoodScreenState extends State<FoodScreen> {
                 SizedBox(
                   width: double.infinity,
                   height: 450,
-                  child: Image.network(
+                  child: Image.asset(
                     widget.food.imagePath,
                     fit: BoxFit.cover,
                   ),

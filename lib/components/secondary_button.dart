@@ -55,7 +55,7 @@ class _SecondaryButtonState extends State<SecondaryButton>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         _controller.forward().then((_) {
           _controller.reverse();
@@ -89,13 +89,14 @@ class _SecondaryButtonState extends State<SecondaryButton>
                   width: widget.iconWidth,
                   height: widget.iconHeight,
                 ),
+                const SizedBox(width: 25),
                 Text(
                   widget.text ?? "",
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     color: widget.textColor,
                     fontSize: widget.fontSize,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],

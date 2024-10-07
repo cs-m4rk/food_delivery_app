@@ -82,7 +82,7 @@ flutter:
     - assets/foods/pizzas/
     - assets/foods/drinks/
     - assets/foods/fries/
-    - assets/foods/desserts/
+    - assets/foods/special/
     - assets/philippines_address/barangays.json
     - assets/philippines_address/city-mun.json
     - assets/philippines_address/provinces.json
@@ -104,8 +104,6 @@ flutter:
     - family: Poppins
       fonts:
         - asset: assets/fonts/Poppins-Regular.ttf
-        - asset: assets/fonts/Poppins-SemiBold.ttf
-        - asset: assets/fonts/Poppins-Italic.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/components/bottom_navbar.dart';
 import 'package:food_delivery_app/components/my_carousel_slider.dart';
 import 'package:food_delivery_app/components/my_food_tile.dart';
 import 'package:food_delivery_app/components/my_sliverbar.dart';
@@ -72,12 +71,16 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Foochi'),
+        backgroundColor: AppColors.kBackground,
+      ),
       backgroundColor: AppColors.kBackground,
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           MySliverbar(
             title: MyTabbar(tabController: _tabController),
-            // child: MyCarouselSlider(),
+            child: const MyCarouselSlider(),
           ),
         ],
         body: Consumer<Restaurant>(
