@@ -16,6 +16,16 @@ class AddressScreen extends StatefulWidget {
 class _AddressScreenState extends State<AddressScreen> {
   final Database db = Database();
 
+  String capitalize(String input) {
+    if (input.isEmpty) return input;
+    return input[0].toUpperCase() + input.substring(1).toLowerCase();
+  }
+
+  var textStyle = const TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,15 +67,23 @@ class _AddressScreenState extends State<AddressScreen> {
                                   spacing: 8.0,
                                   runSpacing: 4.0,
                                   children: [
-                                    Text(customerDetails[i].fullName),
-                                    Text(customerDetails[i].phoneNumber),
-                                    Text(customerDetails[i].region),
-                                    Text(customerDetails[i].province),
-                                    Text(customerDetails[i].city),
-                                    Text(customerDetails[i].barangay),
+                                    Text(
+                                      customerDetails[i].fullName,
+                                      style: textStyle,
+                                    ),
+                                    Text(
+                                      customerDetails[i].phoneNumber,
+                                      style: textStyle,
+                                    ),
+                                    Text(capitalize(customerDetails[i].region)),
+                                    Text(capitalize(
+                                        customerDetails[i].province)),
+                                    Text(capitalize(customerDetails[i].city)),
+                                    Text(capitalize(
+                                        customerDetails[i].barangay)),
                                     Text(customerDetails[i].postalCode),
-                                    Text(customerDetails[i]
-                                        .streetBuildingHouseNumber),
+                                    Text(capitalize(customerDetails[i]
+                                        .streetBuildingHouseNumber)),
                                   ],
                                 ),
                               ),

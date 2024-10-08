@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
@@ -8,10 +6,10 @@ import 'package:food_delivery_app/components/my_dropdown.dart';
 import 'package:food_delivery_app/components/primary_textformfield.dart';
 import 'package:food_delivery_app/models/address.dart';
 import 'package:food_delivery_app/models/customer_details.dart';
-import 'package:food_delivery_app/routes/app_routes.dart';
 import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/services/database/database.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class NewAddressScreen extends StatefulWidget {
   final CustomerDetails? customerDetails;
@@ -38,6 +36,8 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
   List<Barangay> barangays = [];
 
   final Database _database = Database();
+
+ 
 
   @override
   void initState() {
@@ -224,7 +224,11 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                 controller: strtBldgHno,
                 labelText: 'Street, Building, House Number',
               ),
+
               const SizedBox(height: 30),
+              // GoogleMap(
+
+              // ),
               PrimaryButton(
                   onTap: () async {
                     if (fullName.text.isNotEmpty &&
