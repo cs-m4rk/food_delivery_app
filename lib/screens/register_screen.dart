@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/animations/fade_animation.dart';
 import 'package:food_delivery_app/app_image_path.dart';
 import 'package:food_delivery_app/components/export_components/register_components.dart';
 import 'package:food_delivery_app/components/primary_textformfield.dart';
+import 'package:food_delivery_app/models/user.dart' as app_user;
 import 'package:food_delivery_app/routes/app_routes.dart';
 import 'package:food_delivery_app/services/auth/auth_service.dart';
+import 'package:food_delivery_app/services/database/database.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -81,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         await register();
                       }
                     },
-                    text: 'Sign Up'),
+                    title: 'Sign Up'),
                 const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -144,20 +147,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> register() async {
     final authService = AuthService();
+    final database = Database();
 
     if (_passwordController.text == _confirmPasswordController.text) {
       try {
         // trying to register
-        await authService.register(
+        UserCredential userCredential = await authService.register(
           _emailController.text,
           _passwordController.text,
           _usernameController.text,
         );
 
-        // login automatically
-        await authService.login(
-            _emailController.text, _passwordController.text);
+        app_user.User userDetails = app_user.User(
+          fullName: _usernameController.text,
+          email: _emailController.text,
+        );
 
+        // save user details to Firestore
+        await database.saveUserDetails(userDetails, userCredential.user!.uid);
+
+        Navigator.pushReplacementNamed(context, AppRoutes.home);
       } catch (e) {
         setState(() {
           _errorMessage = 'Registration or login failed. Please try again.';

@@ -3,7 +3,7 @@ import 'package:food_delivery_app/themes/app_colors.dart';
 
 class PrimaryButton extends StatelessWidget {
   final VoidCallback onTap;
-  final String? text;
+  final String? title;
   final double? width;
   final double? height;
   final double? borderRadius;
@@ -15,7 +15,7 @@ class PrimaryButton extends StatelessWidget {
 
   const PrimaryButton({
     required this.onTap,
-    this.text,
+    this.title,
     this.height,
     this.width,
     this.borderRadius,
@@ -54,7 +54,7 @@ class PrimaryButton extends StatelessWidget {
                   ],
                   spacer ?? const SizedBox(),
                   Text(
-                    text ?? '',
+                    title ?? '',
                     style: TextStyle(
                       color: color == null ? Colors.white : Colors.black,
                       fontSize: fontSize ?? 15,

@@ -17,22 +17,25 @@ class PrimaryTextformfield extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final void Function(String)? onChanged;
   final String? labelText;
-  const PrimaryTextformfield(
-      {super.key,
-      this.hintText,
-      this.prefixIcon,
-      required this.controller,
-      this.inputFormatters,
-      this.onChanged,
-      this.isFieldValidated = false,
-      this.validator,
-      this.isPhone = false,
-      this.isPasswordField = false,
-      this.isForgetButton = false,
-      this.keyboardType,
-      this.labelText,
-      this.suffixIcon,
-      this.obscureText = false});
+  final bool useBottomBorder;
+  const PrimaryTextformfield({
+    super.key,
+    this.hintText,
+    this.prefixIcon,
+    required this.controller,
+    this.inputFormatters,
+    this.onChanged,
+    this.isFieldValidated = false,
+    this.validator,
+    this.isPhone = false,
+    this.isPasswordField = false,
+    this.isForgetButton = false,
+    this.keyboardType,
+    this.labelText,
+    this.suffixIcon,
+    this.obscureText = false,
+    this.useBottomBorder = false,
+  });
 
   @override
   State<PrimaryTextformfield> createState() => _PrimaryTextformfieldState();
@@ -40,6 +43,7 @@ class PrimaryTextformfield extends StatefulWidget {
 
 class _PrimaryTextformfieldState extends State<PrimaryTextformfield> {
   bool isObscure = true;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -56,24 +60,36 @@ class _PrimaryTextformfieldState extends State<PrimaryTextformfield> {
         filled: false,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.kLine),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.kLine),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.kLine),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: AppColors.kLine),
-          borderRadius: BorderRadius.circular(10),
-        ),
+        // Define the border based on the new property
+        enabledBorder: widget.useBottomBorder
+            ? const UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.kLine),
+              )
+            : OutlineInputBorder(
+                borderSide: const BorderSide(color: AppColors.kLine),
+                borderRadius: BorderRadius.circular(10),
+              ),
+        focusedBorder: widget.useBottomBorder
+            ? const UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.kLine),
+              )
+            : OutlineInputBorder(
+                borderSide: const BorderSide(color: AppColors.kLine),
+                borderRadius: BorderRadius.circular(10),
+              ),
+        border: widget.useBottomBorder
+            ? const UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.kLine),
+              )
+            : OutlineInputBorder(
+                borderSide: const BorderSide(color: AppColors.kLine),
+                borderRadius: BorderRadius.circular(10),
+              ),
         hintStyle: const TextStyle(
-            fontSize: 14, fontWeight: FontWeight.w300, color: Colors.grey),
+          fontSize: 14,
+          fontWeight: FontWeight.w300,
+          color: Colors.grey,
+        ),
         suffixIcon: widget.suffixIcon,
       ),
     );

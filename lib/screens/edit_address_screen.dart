@@ -260,7 +260,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                       Get.snackbar('Error', 'Please fill in all fields');
                     }
                   },
-                  text: 'Submit'),
+                  title: 'Submit'),
             ],
           ),
         ),

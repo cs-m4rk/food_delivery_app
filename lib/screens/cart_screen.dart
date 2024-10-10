@@ -125,7 +125,7 @@ class _CartScreenState extends State<CartScreen> {
                             );
                           }
                         },
-                        text: 'Checkout',
+                        title: 'Checkout',
                       ),
                     )
                   : const SizedBox(),

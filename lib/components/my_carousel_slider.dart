@@ -21,48 +21,42 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 30),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: AnimationLimiter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: AnimationConfiguration.toStaggeredList(
-                duration: const Duration(milliseconds: 375),
-                childAnimationBuilder: (widget) => SlideAnimation(
-                  horizontalOffset: MediaQuery.of(context).size.width / 2,
-                  child: FadeInAnimation(child: widget),
-                ),
-                children: [
-                  const SizedBox(height: 20),
-                  carousel_slider.CarouselSlider(
-                    options: carousel_slider.CarouselOptions(
-                      height: 160,
-                      viewportFraction: 1,
-                      autoPlay: true,
-                      autoPlayInterval: const Duration(
-                          seconds: 5), // Control time between slides
-                      autoPlayAnimationDuration: const Duration(
-                          milliseconds: 800), // Slide transition duration
-                      pauseAutoPlayOnTouch: true,
-                      scrollPhysics: const BouncingScrollPhysics(),
-                      enableInfiniteScroll: true, // Loop the carousel
-                      // Ensure only one item slides at a time
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          selectedIndex = index; // Update the selected index
-                        });
-                      },
-                    ),
-                    items: imagePaths.map((imagePath) {
-                      return TaskCard(imagePath: imagePath);
-                    }).toList(),
-                  ),
-                ],
+      padding: const EdgeInsets.only(top: 20), // Remove or reduce top padding
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: AnimationLimiter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: AnimationConfiguration.toStaggeredList(
+              duration: const Duration(milliseconds: 375),
+              childAnimationBuilder: (widget) => SlideAnimation(
+                horizontalOffset: MediaQuery.of(context).size.width / 2,
+                child: FadeInAnimation(child: widget),
               ),
+              children: [
+                carousel_slider.CarouselSlider(
+                  options: carousel_slider.CarouselOptions(
+                    height: 160,
+                    viewportFraction: 1,
+                    autoPlay: true,
+                    autoPlayInterval: const Duration(seconds: 5),
+                    autoPlayAnimationDuration:
+                        const Duration(milliseconds: 800),
+                    pauseAutoPlayOnTouch: true,
+                    scrollPhysics: const BouncingScrollPhysics(),
+                    enableInfiniteScroll: true,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        selectedIndex = index;
+                      });
+                    },
+                  ),
+                  items: imagePaths.map((imagePath) {
+                    return TaskCard(imagePath: imagePath);
+                  }).toList(),
+                ),
+              ],
             ),
           ),
         ),

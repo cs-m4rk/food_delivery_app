@@ -3,7 +3,6 @@ import 'package:food_delivery_app/components/export_components/login_components.
 import 'package:food_delivery_app/models/food.dart';
 import 'package:food_delivery_app/models/restaurant.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
-import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/services/database/database.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:provider/provider.dart';
@@ -147,7 +146,7 @@ class _FoodScreenState extends State<FoodScreen> {
                         onTap: () async {
                           addToCart(widget.food, widget.selectedAddons);
                         },
-                        text: "Add to cart",
+                        title: "Add to cart",
                       ),
                     ],
                   ),

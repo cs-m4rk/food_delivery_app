@@ -13,7 +13,7 @@ class MySliverbar extends StatelessWidget {
       foregroundColor: AppColors.kBackground,
       centerTitle: true,
       expandedHeight: 300,
-      collapsedHeight: 70,
+      collapsedHeight: 80,
       floating: false,
       pinned: true,
       backgroundColor: AppColors.kBackground,

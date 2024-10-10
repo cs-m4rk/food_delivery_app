@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         await login();
                       }
                     },
-                    text: 'Sign In'),
+                    title: 'Sign In'),
                 const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -214,7 +214,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       ),
                     );
                   },
-                  text: "Place Order"),
+                  title: "Place Order"),
             ),
           ],
         ),

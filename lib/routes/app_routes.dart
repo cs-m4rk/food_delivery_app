@@ -49,7 +49,7 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => RegisterScreen());
 
       case updateProfile:
-        return MaterialPageRoute(builder: (_) => UpdateProfileScreen());
+        return MaterialPageRoute(builder: ((_) => UpdateProfileScreen()));
       case onboarding:
         return MaterialPageRoute(builder: (_) => OnboardingScreen());
 

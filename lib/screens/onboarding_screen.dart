@@ -65,7 +65,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   );
                 }
               },
-              text: currentIndex == (onboardingList.length - 1)
+              title: currentIndex == (onboardingList.length - 1)
                   ? 'Get Started'
                   : 'Next',
             ),

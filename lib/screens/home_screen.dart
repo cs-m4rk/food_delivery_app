@@ -20,6 +20,11 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  var txtStyle = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  );
+
   void initState() {
     super.initState();
     _tabController =
@@ -72,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Foochi'),
+        title: Text('Quickbite', style: txtStyle),
         backgroundColor: AppColors.kBackground,
       ),
       backgroundColor: AppColors.kBackground,

@@ -9,7 +9,6 @@ import 'package:food_delivery_app/models/customer_details.dart';
 import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/services/database/database.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class NewAddressScreen extends StatefulWidget {
   final CustomerDetails? customerDetails;
@@ -258,7 +257,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                       Get.snackbar('Error', 'Please fill in all fields');
                     }
                   },
-                  text: 'Submit'),
+                  title: 'Submit'),
             ],
           ),
         ),

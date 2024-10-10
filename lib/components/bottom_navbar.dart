@@ -72,8 +72,8 @@ class _BottomNavbarState extends State<BottomNavbar> {
             label: 'Cart',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.receipt),
-            label: 'Purchased',
+            icon: Icon(Icons.shopping_bag),
+            label: 'Orders',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

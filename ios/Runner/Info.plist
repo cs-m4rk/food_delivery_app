@@ -49,5 +49,11 @@
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>NSCameraUsageDescription</key>
+		<string>Need access to camera to upload profile picture.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Need access to gallery to upload profile picture.</string>
+		
+
 	</dict>
 </plist>

@@ -117,7 +117,7 @@ class _AddressScreenState extends State<AddressScreen> {
                       }
                     });
                   },
-                  text: 'Add Address',
+                  title: 'Add Address',
                   spacer: const SizedBox(width: 5),
                   icon: const Icon(Icons.add_circle, color: Colors.white),
                 ),
