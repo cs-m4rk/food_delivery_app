@@ -17,11 +17,13 @@ class MyTabbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TabBar(
-        dividerColor: AppColors.kBackground,
-        controller: tabController,
-        tabs: _buildCategoryTabs(),
+    return SingleChildScrollView(
+      child: Container(
+        child: TabBar(
+          dividerColor: AppColors.kBackground,
+          controller: tabController,
+          tabs: _buildCategoryTabs(),
+        ),
       ),
     );
   }

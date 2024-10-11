@@ -34,9 +34,31 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
   List<City> cities = [];
   List<Barangay> barangays = [];
 
-  final Database _database = Database();
+  Future<void> saveCustomerDetails() async {
+    final Database database = Database();
+    final userId = AuthService().getCurrentUser()!.uid;
 
- 
+    try {
+      final CustomerDetails newAddress = CustomerDetails(
+        fullName: fullName.text,
+        phoneNumber: phoneNumber.text,
+        postalCode: postalCode.text,
+        streetBuildingHouseNumber: strtBldgHno.text,
+        region: selectedRegion!,
+        province: selectedProvince!,
+        city: selectedCity!,
+        barangay: selectedBarangay!,
+        userId: userId,
+      );
+
+      await database.saveCustomerDetails(userId, newAddress);
+
+      Get.snackbar('', "Successfully saved");
+      Navigator.pop(context);
+    } catch (e) {
+      Get.snackbar('', "Failed to save");
+    }
+  }
 
   @override
   void initState() {
@@ -229,35 +251,7 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
 
               // ),
               PrimaryButton(
-                  onTap: () async {
-                    if (fullName.text.isNotEmpty &&
-                        phoneNumber.text.isNotEmpty &&
-                        selectedRegion != null &&
-                        selectedProvince != null &&
-                        selectedCity != null &&
-                        selectedBarangay != null) {
-                      final user = AuthService().getCurrentUser();
-                      final userId = user!.uid;
-                      final newCustomerDetails = CustomerDetails(
-                        userId: userId,
-                        fullName: fullName.text,
-                        phoneNumber: phoneNumber.text,
-                        region: selectedRegion!,
-                        province: selectedProvince!,
-                        city: selectedCity!,
-                        barangay: selectedBarangay!,
-                        postalCode: postalCode.text,
-                        streetBuildingHouseNumber: strtBldgHno.text,
-                      );
-                      await _database.saveCustomerDetails(
-                          userId, newCustomerDetails);
-                      Navigator.pop(context, newCustomerDetails);
-                    } else {
-                      // Handle the case where fields are empty
-                      Get.snackbar('Error', 'Please fill in all fields');
-                    }
-                  },
-                  title: 'Submit'),
+                  onTap: () => saveCustomerDetails(), title: 'Submit'),
             ],
           ),
         ),

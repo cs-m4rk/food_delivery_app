@@ -4,7 +4,6 @@ import 'package:food_delivery_app/components/export_components/login_components.
 import 'package:food_delivery_app/components/my_profile.dart';
 import 'package:food_delivery_app/models/user.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
-import 'package:food_delivery_app/screens/update_profile_screen.dart';
 import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/services/database/database.dart';
 
@@ -54,8 +53,7 @@ class ProfileScreen extends StatelessWidget {
                               width: 120,
                               height: 120,
                               child: CachedNetworkImage(
-                                imageUrl:
-                                    'https://firebasestorage.googleapis.com/v0/b/food-delivery-app-fc8a5.appspot.com/o/profile_images%2Fx7XUBd6DyhYtYb8CxQXQpPS35xM2.png?alt=media&token=f5b7dc9a-221f-4de9-858b-d3b130e5e431',
+                                imageUrl: user.imageUrl!,
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) =>
                                     Center(child: CircularProgressIndicator()),

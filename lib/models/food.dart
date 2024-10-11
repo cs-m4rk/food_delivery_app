@@ -42,9 +42,9 @@ class Food {
 
 enum FoodCategory {
   burgers,
-  pizza,
-  fries,
   drinks,
+  fries,
+  chickens,
 }
 
 class Addon {

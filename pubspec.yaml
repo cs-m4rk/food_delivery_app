@@ -95,7 +95,7 @@ flutter:
   assets:
     - assets/
     - assets/foods/burgers/
-    - assets/foods/pizzas/
+    - assets/foods/chickens/
     - assets/foods/drinks/
     - assets/foods/fries/
     - assets/foods/special/

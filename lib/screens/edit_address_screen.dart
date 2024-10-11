@@ -34,7 +34,33 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
   List<City> cities = [];
   List<Barangay> barangays = [];
 
-  final Database _database = Database();
+  Future<void> updateCustomerDetails() async {
+    final Database database = Database();
+    final userId = AuthService().getCurrentUser()!.uid;
+    final documentId = widget.customerDetails?.documentId;
+
+    try {
+      final CustomerDetails updatedAddress = CustomerDetails(
+        userId: userId,
+        documentId: documentId,
+        fullName: fullName.text,
+        phoneNumber: phoneNumber.text,
+        region: selectedRegion!,
+        province: selectedProvince!,
+        city: selectedCity!,
+        barangay: selectedBarangay!,
+        postalCode: postalCode.text,
+        streetBuildingHouseNumber: strtBldgHno.text,
+      );
+
+      await database.updateCustomerDetails(documentId!, updatedAddress);
+
+      Navigator.pop(context);
+      Get.snackbar('Message', "Successfully updated");
+    } catch (e) {
+      Get.snackbar('Message', "Failed to update");
+    }
+  }
 
   @override
   void initState() {
@@ -223,44 +249,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
               ),
               const SizedBox(height: 30),
               PrimaryButton(
-                  onTap: () async {
-                    if (fullName.text.isNotEmpty &&
-                        phoneNumber.text.isNotEmpty &&
-                        selectedRegion != null &&
-                        selectedProvince != null &&
-                        selectedCity != null &&
-                        selectedBarangay != null) {
-                      final user = AuthService().getCurrentUser();
-                      final userId = user!.uid;
-                      final documentId = widget.customerDetails?.documentId;
-                      final updatedCustomerDetails = CustomerDetails(
-                        userId: userId,
-                        documentId: documentId,
-                        fullName: fullName.text,
-                        phoneNumber: phoneNumber.text,
-                        region: selectedRegion!,
-                        province: selectedProvince!,
-                        city: selectedCity!,
-                        barangay: selectedBarangay!,
-                        postalCode: postalCode.text,
-                        streetBuildingHouseNumber: strtBldgHno.text,
-                      );
-
-                      if (documentId != null) {
-                        await Database().updateCustomerDetails(
-                            documentId, updatedCustomerDetails);
-                        Navigator.pop(context, updatedCustomerDetails);
-                      } else {
-                        // Handle case where documentId is null (shouldn't happen if data is fetched correctly)
-                        Get.snackbar('Error', 'Customer details not found');
-                      }
-                      Navigator.pop(context, updatedCustomerDetails);
-                    } else {
-                      // Handle the case where fields are empty
-                      Get.snackbar('Error', 'Please fill in all fields');
-                    }
-                  },
-                  title: 'Submit'),
+                  onTap: () => updateCustomerDetails(), title: 'Submit'),
             ],
           ),
         ),

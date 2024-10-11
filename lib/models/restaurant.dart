@@ -7,11 +7,9 @@ import 'package:food_delivery_app/services/database/database.dart';
 
 class Restaurant extends ChangeNotifier {
   final List<Food> _menu = [
- 
-
     //burgers
     Food(
-      imagePath: 'assets/foods/burgers/burger1.jpg',
+      imagePath: 'assets/foods/burgers/burger1.webp',
       category: FoodCategory.burgers,
       name: 'Classic Burger',
       price: 90.0,
@@ -22,7 +20,7 @@ class Restaurant extends ChangeNotifier {
       ],
     ),
     Food(
-      imagePath: 'assets/foods/burgers/burger2.jpg',
+      imagePath: 'assets/foods/burgers/burger2.webp',
       category: FoodCategory.burgers,
       name: 'Classic Burger',
       price: 190.0,
@@ -33,7 +31,7 @@ class Restaurant extends ChangeNotifier {
       ],
     ),
     Food(
-      imagePath: 'assets/foods/burgers/burger3.jpg',
+      imagePath: 'assets/foods/burgers/burger3.webp',
       category: FoodCategory.burgers,
       name: 'Classic Burger',
       price: 200.0,
@@ -44,7 +42,7 @@ class Restaurant extends ChangeNotifier {
       ],
     ),
     Food(
-      imagePath: 'assets/foods/burgers/burger4.jpg',
+      imagePath: 'assets/foods/burgers/burger4.webp',
       category: FoodCategory.burgers,
       name: 'Classic Burger',
       price: 100.0,
@@ -55,10 +53,9 @@ class Restaurant extends ChangeNotifier {
       ],
     ),
 
-    //pizzas
     Food(
-      imagePath: 'assets/foods/pizzas/pizza1.jpg',
-      category: FoodCategory.pizza,
+      imagePath: 'assets/foods/burgers/burger5.webp',
+      category: FoodCategory.burgers,
       name: 'Classic pizza',
       price: 450.0,
       description: 'way lami syang bayhana',
@@ -67,9 +64,23 @@ class Restaurant extends ChangeNotifier {
         Addon(name: 'Extra bitch', price: 20.0),
       ],
     ),
+
     Food(
-      imagePath: 'assets/foods/pizzas/pizza2.jpg',
-      category: FoodCategory.pizza,
+      imagePath: 'assets/foods/burgers/burger6.webp',
+      category: FoodCategory.burgers,
+      name: 'Classic pizza',
+      price: 450.0,
+      description: 'way lami syang bayhana',
+      availableAddons: [
+        Addon(name: 'Extra fuck', price: 10.0),
+        Addon(name: 'Extra bitch', price: 20.0),
+      ],
+    ),
+
+    // drinks
+    Food(
+      imagePath: 'assets/foods/drinks/drink1.webp',
+      category: FoodCategory.drinks,
       name: 'wtf pizza',
       price: 501.0,
       description: 'yati',
@@ -78,9 +89,10 @@ class Restaurant extends ChangeNotifier {
         Addon(name: 'Extra meat', price: 20.0),
       ],
     ),
+
     Food(
-      imagePath: 'assets/foods/pizzas/pizza3.jpg',
-      category: FoodCategory.pizza,
+      imagePath: 'assets/foods/drinks/drink2.webp',
+      category: FoodCategory.drinks,
       name: 'wtf pizza',
       price: 501.0,
       description: 'yati',
@@ -89,9 +101,46 @@ class Restaurant extends ChangeNotifier {
         Addon(name: 'Extra meat', price: 20.0),
       ],
     ),
+
     Food(
-      imagePath: 'assets/foods/pizzas/pizza4.jpg',
-      category: FoodCategory.pizza,
+      imagePath: 'assets/foods/drinks/drink3.webp',
+      category: FoodCategory.drinks,
+      name: 'wtf pizza',
+      price: 501.0,
+      description: 'yati',
+      availableAddons: [
+        Addon(name: 'Extra Cheese', price: 10.0),
+        Addon(name: 'Extra meat', price: 20.0),
+      ],
+    ),
+
+    Food(
+      imagePath: 'assets/foods/drinks/drink4.webp',
+      category: FoodCategory.drinks,
+      name: 'wtf pizza',
+      price: 501.0,
+      description: 'yati',
+      availableAddons: [
+        Addon(name: 'Extra Cheese', price: 10.0),
+        Addon(name: 'Extra meat', price: 20.0),
+      ],
+    ),
+
+    Food(
+      imagePath: 'assets/foods/drinks/drink5.webp',
+      category: FoodCategory.drinks,
+      name: 'wtf pizza',
+      price: 501.0,
+      description: 'yati',
+      availableAddons: [
+        Addon(name: 'Extra Cheese', price: 10.0),
+        Addon(name: 'Extra meat', price: 20.0),
+      ],
+    ),
+
+    Food(
+      imagePath: 'assets/foods/drinks/drink6.webp',
+      category: FoodCategory.drinks,
       name: 'wtf pizza',
       price: 501.0,
       description: 'yati',
@@ -102,8 +151,8 @@ class Restaurant extends ChangeNotifier {
     ),
 
     // fries
-    /* Food(
-      imagePath: 'assets/foods/fries/fries1.jpg',
+    Food(
+      imagePath: 'assets/foods/fries/fries1.webp',
       category: FoodCategory.fries,
       name: 'wtf fries',
       price: 501.0,
@@ -114,7 +163,7 @@ class Restaurant extends ChangeNotifier {
       ],
     ),
     Food(
-      imagePath: 'assets/foods/fries/fries2.jpg',
+      imagePath: 'assets/foods/fries/fries2.webp',
       category: FoodCategory.fries,
       name: 'wtf fries',
       price: 501.0,
@@ -125,7 +174,7 @@ class Restaurant extends ChangeNotifier {
       ],
     ),
     Food(
-      imagePath: 'assets/foods/fries/fries3.jpg',
+      imagePath: 'assets/foods/fries/fries3.webp',
       category: FoodCategory.fries,
       name: 'wtf fries',
       price: 501.0,
@@ -135,17 +184,7 @@ class Restaurant extends ChangeNotifier {
         Addon(name: 'Extra meat', price: 20.0),
       ],
     ),
-    Food(
-      imagePath: 'assets/foods/fries/fries4.jpg',
-      category: FoodCategory.fries,
-      name: 'wtf fries',
-      price: 501.0,
-      description: 'yati',
-      availableAddons: [
-        Addon(name: 'Extra Cheese', price: 10.0),
-        Addon(name: 'Extra meat', price: 20.0),
-      ],
-    ),
+
     Food(
       imagePath: 'assets/foods/fries/fries5.jpg',
       category: FoodCategory.fries,
@@ -157,81 +196,11 @@ class Restaurant extends ChangeNotifier {
         Addon(name: 'Extra meat', price: 20.0),
       ],
     ),
- 
-  // drinks
-   Food(
-      imagePath: 'assets/foods/drinks/fanta.jpg',
-      category: FoodCategory.drinks,
-      name: 'wtf drinks',
-      price: 501.0,
-      description: 'yati',
-      availableAddons: [
-        Addon(name: 'Extra Cheese', price: 10.0),
-        Addon(name: 'Extra meat', price: 20.0),
-      ],
-    ),
-     Food(
-      imagePath: 'assets/foods/drinks/cocacola.jpeg',
-      category: FoodCategory.drinks,
-      name: 'wtf drinks',
-      price: 501.0,
-      description: 'yati',
-      availableAddons: [
-        Addon(name: 'Extra Cheese', price: 10.0),
-        Addon(name: 'Extra meat', price: 20.0),
-      ],
-    ),
-     Food(
-      imagePath: 'assets/foods/drinks/sprite.jpg',
-      category: FoodCategory.drinks,
-      name: 'wtf drinks',
-      price: 501.0,
-      description: 'yati',
-      availableAddons: [
-        Addon(name: 'Extra Cheese', price: 10.0),
-        Addon(name: 'Extra meat', price: 20.0),
-      ],
-    ),
-     Food(
-      imagePath: 'assets/foods/drinks/pepsi.jpg',
-      category: FoodCategory.drinks,
-      name: 'wtf drinks',
-      price: 501.0,
-      description: 'yati',
-      availableAddons: [
-        Addon(name: 'Extra Cheese', price: 10.0),
-        Addon(name: 'Extra meat', price: 20.0),
-      ],
-    ),
- 
 
-  // desserts
     Food(
-      imagePath: 'assets/foods/desserts/dessert1.jpg',
-      category: FoodCategory.desserts,
-      name: 'wtf desserts',
-      price: 501.0,
-      description: 'yati',
-      availableAddons: [
-        Addon(name: 'Extra Cheese', price: 10.0),
-        Addon(name: 'Extra meat', price: 20.0),
-      ],
-    ),
-    Food(
-      imagePath: 'assets/foods/desserts/dessert2.jpg',
-      category: FoodCategory.desserts,
-      name: 'wtf desserts',
-      price: 501.0,
-      description: 'yati',
-      availableAddons: [
-        Addon(name: 'Extra Cheese', price: 10.0),
-        Addon(name: 'Extra meat', price: 20.0),
-      ],
-    ),
-    Food(
-      imagePath: 'assets/foods/desserts/dessert3.jpg',
-      category: FoodCategory.desserts,
-      name: 'wtf desserts',
+      imagePath: 'assets/foods/fries/fries6.jpg',
+      category: FoodCategory.fries,
+      name: 'wtf fries',
       price: 501.0,
       description: 'yati',
       availableAddons: [
@@ -240,7 +209,74 @@ class Restaurant extends ChangeNotifier {
       ],
     ),
 
-    */
+    Food(
+      imagePath: 'assets/foods/fries/fries7.jpg',
+      category: FoodCategory.fries,
+      name: 'wtf fries',
+      price: 501.0,
+      description: 'yati',
+      availableAddons: [
+        Addon(name: 'Extra Cheese', price: 10.0),
+        Addon(name: 'Extra meat', price: 20.0),
+      ],
+    ),
+
+    // chickens
+    Food(
+      imagePath: 'assets/foods/chickens/chicken1.webp',
+      category: FoodCategory.chickens,
+      name: 'wtf chickens',
+      price: 501.0,
+      description: 'yati',
+      availableAddons: [
+        Addon(name: 'Extra Cheese', price: 10.0),
+        Addon(name: 'Extra meat', price: 20.0),
+      ],
+    ),
+    Food(
+      imagePath: 'assets/foods/chickens/chicken2.webp',
+      category: FoodCategory.chickens,
+      name: 'wtf chickens',
+      price: 501.0,
+      description: 'yati',
+      availableAddons: [
+        Addon(name: 'Extra Cheese', price: 10.0),
+        Addon(name: 'Extra meat', price: 20.0),
+      ],
+    ),
+    Food(
+      imagePath: 'assets/foods/chickens/chicken3.webp',
+      category: FoodCategory.chickens,
+      name: 'wtf chickens',
+      price: 501.0,
+      description: 'yati',
+      availableAddons: [
+        Addon(name: 'Extra Cheese', price: 10.0),
+        Addon(name: 'Extra meat', price: 20.0),
+      ],
+    ),
+    Food(
+      imagePath: 'assets/foods/chickens/chicken4.webp',
+      category: FoodCategory.chickens,
+      name: 'wtf chickens',
+      price: 501.0,
+      description: 'yati',
+      availableAddons: [
+        Addon(name: 'Extra Cheese', price: 10.0),
+        Addon(name: 'Extra meat', price: 20.0),
+      ],
+    ),
+    Food(
+      imagePath: 'assets/foods/chickens/chicken5.webp',
+      category: FoodCategory.chickens,
+      name: 'wtf chickens',
+      price: 501.0,
+      description: 'yati',
+      availableAddons: [
+        Addon(name: 'Extra Cheese', price: 10.0),
+        Addon(name: 'Extra meat', price: 20.0),
+      ],
+    ),
   ];
 
   /**

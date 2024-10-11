@@ -20,62 +20,61 @@ class Database {
   final CollectionReference userDetails =
       FirebaseFirestore.instance.collection('userDetails');
 
+  // Save order details to Firestore
   Future<void> saveOrderDetails(OrderDetails orderCollection) async {
     try {
       await orderDetails
-          .doc(orderCollection.userId) // Use userId as document ID
-          .set(orderCollection.toMap()); // Save the order details
+          .doc(orderCollection.userId)
+          .set(orderCollection.toMap());
     } catch (e) {
-      throw Exception(e); // Rethrow if needed for error handling
+      throw Exception(e);
     }
   }
 
+// Fetch order details from Firestore
   Future<OrderDetails?> getOrderDetails(String userId) async {
     try {
       final docSnapshot = await orderDetails.doc(userId).get();
 
       if (docSnapshot.exists) {
-        // Map the document data back to an OrderDetails object
         final orderData = docSnapshot.data() as Map<String, dynamic>;
         return OrderDetails.fromMap(orderData);
       } else {
-        // Handle case where the document does not exist
         return null;
       }
     } catch (e) {
-      throw Exception(e); // Handle any errors
+      throw Exception(e);
     }
   }
 
 // Save customer details to Firestore
   Future<void> saveCustomerDetails(
       String userId, CustomerDetails newCustomerDetails) async {
-    // Add the new customer details to Firestore and get the document reference
     DocumentReference docRef =
         await customerDetails.add(newCustomerDetails.toMap());
 
-    // Update the newCustomerDetails object with the generated document ID
-    newCustomerDetails.documentId =
-        docRef.id; // Store the generated document ID
+    newCustomerDetails.documentId = docRef.id;
 
-    // Optionally, you can also update Firestore with the document ID
     await docRef.update({'documentId': newCustomerDetails.documentId});
   }
 
   // fetch all customer details from Firestore according to their document id
-  Future<List<CustomerDetails>> getCustomerDetails() async {
-    QuerySnapshot snapshot = await customerDetails.get();
-    return snapshot.docs.map((doc) {
-      // Include the document ID in the map passed to fromMap
-      return CustomerDetails.fromMap({
-        'documentId': doc.id, // Capture the document ID
-        ...doc.data() as Map<String, dynamic>, // Spread the other fields
-      });
-    }).toList();
-  }
+Future<List<CustomerDetails>> getCustomerDetails(String userId) async {
+  // Fetch customer details where the userId matches the provided userId
+  QuerySnapshot snapshot = await customerDetails
+      .where('userId', isEqualTo: userId) // Apply the filter
+      .get();
+
+  return snapshot.docs.map((doc) {
+    // Include the document ID in the map passed to fromMap
+    return CustomerDetails.fromMap({
+      'documentId': doc.id, // Capture the document ID
+      ...doc.data() as Map<String, dynamic>, // Spread the other fields
+    });
+  }).toList();
+}
 
   // edit and update customer details in Firestore
-
   Future<void> updateCustomerDetails(
       String documentId, CustomerDetails updatedCustomerDetails) async {
     DocumentReference docRef = customerDetails.doc(documentId);
@@ -83,7 +82,6 @@ class Database {
   }
 
   // save cart detaits to Firestore
-
   Future<void> saveCartDetails(String userId, List<CartItem> cartItems) async {
     List<Map<String, dynamic>> cart = cartItems.map((cartItem) {
       return {
@@ -197,7 +195,8 @@ class Database {
   }
 
   //upload image to Firestore
-  Future<String> uploadProfileImageToStorage(Uint8List imageFile, String userId) async {
+  Future<String> uploadProfileImageToStorage(
+      Uint8List imageFile, String userId) async {
     try {
       final ref = FirebaseStorage.instance.ref('profile_images/$userId.png');
 

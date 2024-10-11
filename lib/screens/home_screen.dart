@@ -49,8 +49,6 @@ class _HomeScreenState extends State<HomeScreen>
 
       return ListView.builder(
         itemCount: filteredFood.length,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.zero,
         itemBuilder: (context, index) {
           // get individual food item

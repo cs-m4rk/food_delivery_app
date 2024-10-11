@@ -3,6 +3,7 @@ import 'package:food_delivery_app/components/export_components/login_components.
 import 'package:food_delivery_app/components/my_container.dart';
 import 'package:food_delivery_app/models/customer_details.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
+import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/services/database/database.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 
@@ -15,6 +16,7 @@ class AddressScreen extends StatefulWidget {
 
 class _AddressScreenState extends State<AddressScreen> {
   final Database db = Database();
+  final userId = AuthService().getCurrentUser()!.uid;
 
   String capitalize(String input) {
     if (input.isEmpty) return input;
@@ -34,7 +36,7 @@ class _AddressScreenState extends State<AddressScreen> {
         title: const Text('Address Selection'),
       ),
       body: FutureBuilder<List<CustomerDetails>>(
-        future: db.getCustomerDetails(), // Fetch customer details
+        future: db.getCustomerDetails(userId), 
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -104,8 +106,6 @@ class _AddressScreenState extends State<AddressScreen> {
                     ),
                   ),
                 ],
-                const SizedBox(height: 10),
-                const SizedBox(height: 20),
                 PrimaryButton(
                   onTap: () {
                     Navigator.pushNamed(context, AppRoutes.newAddress)

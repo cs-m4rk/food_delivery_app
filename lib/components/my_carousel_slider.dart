@@ -13,9 +13,11 @@ class _MyCarouselSliderState extends State<MyCarouselSlider> {
   int selectedIndex = 0;
 
   final List<String> imagePaths = [
-    'assets/foods/special/special1.jpg',
-    'assets/foods/special/special4.jpg',
-    'assets/foods/special/special3.jpg',
+    'assets/foods/special/special1.webp',
+    'assets/foods/special/special2.webp',
+    'assets/foods/special/special3.webp',
+    'assets/foods/special/special4.webp',
+    'assets/foods/special/special5.webp',
   ];
 
   @override
@@ -76,12 +78,12 @@ class TaskCard extends StatelessWidget {
       padding: const EdgeInsets.all(0), // Remove padding to avoid overflow
       width: double.infinity,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8), // Optional: add rounded corners
+        borderRadius: BorderRadius.circular(8),
         child: SizedBox(
-          height: 160, // Set the height of the carousel here
+          height: 160,
           child: Image.asset(
             imagePath,
-            fit: BoxFit.cover, // This ensures the image covers the whole area
+            fit: BoxFit.cover,
           ),
         ),
       ),
