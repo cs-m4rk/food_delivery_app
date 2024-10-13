@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,17 +30,18 @@ class Database {
     }
   }
 
-// Fetch order details from Firestore
-  Future<OrderDetails?> getOrderDetails(String userId) async {
+// Fetch all order details for the user from Firestore
+  Future<List<OrderDetails>> getAllOrderDetails(String userId) async {
     try {
-      final docSnapshot = await orderDetails.doc(userId).get();
+      QuerySnapshot snapshot = await orderDetails
+          .where('userId',
+              isEqualTo: userId) // Fetch only orders for the current user
+          .get();
 
-      if (docSnapshot.exists) {
-        final orderData = docSnapshot.data() as Map<String, dynamic>;
+      return snapshot.docs.map((doc) {
+        final orderData = doc.data() as Map<String, dynamic>;
         return OrderDetails.fromMap(orderData);
-      } else {
-        return null;
-      }
+      }).toList();
     } catch (e) {
       throw Exception(e);
     }
@@ -59,20 +59,20 @@ class Database {
   }
 
   // fetch all customer details from Firestore according to their document id
-Future<List<CustomerDetails>> getCustomerDetails(String userId) async {
-  // Fetch customer details where the userId matches the provided userId
-  QuerySnapshot snapshot = await customerDetails
-      .where('userId', isEqualTo: userId) // Apply the filter
-      .get();
+  Future<List<CustomerDetails>> getCustomerDetails(String userId) async {
+    // Fetch customer details where the userId matches the provided userId
+    QuerySnapshot snapshot = await customerDetails
+        .where('userId', isEqualTo: userId) // Apply the filter
+        .get();
 
-  return snapshot.docs.map((doc) {
-    // Include the document ID in the map passed to fromMap
-    return CustomerDetails.fromMap({
-      'documentId': doc.id, // Capture the document ID
-      ...doc.data() as Map<String, dynamic>, // Spread the other fields
-    });
-  }).toList();
-}
+    return snapshot.docs.map((doc) {
+      // Include the document ID in the map passed to fromMap
+      return CustomerDetails.fromMap({
+        'documentId': doc.id, // Capture the document ID
+        ...doc.data() as Map<String, dynamic>, // Spread the other fields
+      });
+    }).toList();
+  }
 
   // edit and update customer details in Firestore
   Future<void> updateCustomerDetails(

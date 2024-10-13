@@ -54,8 +54,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 // Update the state only if a new address was selected
                 if (selectedDetails != null) {
                   setState(() {
-                    _selectedCustomerDetails =
-                        selectedDetails; // Update the selected details
+                    _selectedCustomerDetails = selectedDetails;
                   });
                 }
               },
@@ -69,31 +68,36 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 10),
-                    Wrap(
-                      spacing: 8.0,
-                      runSpacing: 4.0,
-                      children: [
-                        if (_selectedCustomerDetails != null) ...[
-                          Text(_selectedCustomerDetails!.fullName),
-                          Text(_selectedCustomerDetails!.phoneNumber),
-                          Text(_selectedCustomerDetails!.region),
-                          Text(_selectedCustomerDetails!.province),
-                          Text(_selectedCustomerDetails!.city),
-                          Text(_selectedCustomerDetails!.barangay),
-                          Text(_selectedCustomerDetails!.postalCode),
-                          Text(_selectedCustomerDetails!
-                              .streetBuildingHouseNumber),
-                        ] else ...[
-                          const Center(
-                            child: Text('No address selected'),
-                          )
-                        ],
-                      ],
+                    // Setting a fixed width or ensuring a minimum width
+                    Container(
+                      width: double
+                          .infinity, // Ensures the container takes full available width
+                      child: _selectedCustomerDetails != null
+                          ? Wrap(
+                              spacing: 8.0, // Adds spacing between the details
+                              runSpacing:
+                                  4.0, // Adds spacing when wrapping to next line
+                              children: [
+                                Text(_selectedCustomerDetails!.fullName),
+                                Text(_selectedCustomerDetails!.phoneNumber),
+                                Text(_selectedCustomerDetails!.region),
+                                Text(_selectedCustomerDetails!.province),
+                                Text(_selectedCustomerDetails!.city),
+                                Text(_selectedCustomerDetails!.barangay),
+                                Text(_selectedCustomerDetails!.postalCode),
+                                Text(_selectedCustomerDetails!
+                                    .streetBuildingHouseNumber),
+                              ],
+                            )
+                          : const Center(
+                              child: Text('No address selected'),
+                            ),
                     ),
                   ],
                 ),
               ),
             ),
+
             const SizedBox(height: 10),
             ListView.builder(
               shrinkWrap: true,
@@ -154,6 +158,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ],
               ),
             ),
+            const SizedBox(height: 10),
+            // New Container to show order details
             MyContainer(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,35 +192,49 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ],
               ),
             ),
+            const SizedBox(
+                height: 10), // Adds space between order summary and button
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
               child: PrimaryButton(
-                  onTap: () {
-                    final userId = AuthService().getCurrentUser()!.uid;
-                    final orderDetails = OrderDetails(
-                        userId: userId,
-                        cartItems: widget.selectedItems,
-                        customerDetails: _selectedCustomerDetails!,
-                        paymentMethod: _selectedPaymentMethod == 0
-                            ? 'Cash on Delivery'
-                            : 'Gcash',
-                        totalPrice: totalPrice,
-                        shippingFee: shippingFee,
-                        subTotalPrice: subTotalPrice,
-                        createdAt: DateTime.now());
-
-                    _database.saveOrderDetails(orderDetails);
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OrdersScreen(
-                          selectedItems: widget.selectedItems,
-                        ),
+                onTap: () {
+                  if (_selectedCustomerDetails == null) {
+                    // Show error if customer details are missing
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select a delivery address'),
                       ),
                     );
-                  },
-                  title: "Place Order"),
+                    return;
+                  }
+
+                  final userId = AuthService().getCurrentUser()!.uid;
+                  final orderDetails = OrderDetails(
+                    userId: userId,
+                    cartItems: widget.selectedItems,
+                    customerDetails: _selectedCustomerDetails!,
+                    paymentMethod: _selectedPaymentMethod == 0
+                        ? 'Cash on Delivery'
+                        : 'Gcash',
+                    totalPrice: totalPrice,
+                    shippingFee: shippingFee,
+                    subTotalPrice: subTotalPrice,
+                    createdAt: DateTime.now(),
+                  );
+
+                  // Save the order to the database
+                  _database.saveOrderDetails(orderDetails);
+
+                  // Navigate to the OrdersScreen without passing selectedItems
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OrdersScreen(),
+                    ),
+                  );
+                },
+                title: "Place Order",
+              ),
             ),
           ],
         ),
