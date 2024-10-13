@@ -3,12 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_delivery_app/components/export_components/login_components.dart';
 import 'package:food_delivery_app/components/onboarding_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '/models/onboarding.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
-
-
 import 'package:get/get.dart';
-
 import '../components/custom_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -19,8 +17,18 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  Future<void> completeOnboarding() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('onboardingComplete', true);
+  }
+
   PageController pageController = PageController();
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +65,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               width: 130.w,
               onTap: () {
                 if (currentIndex == (onboardingList.length - 1)) {
+                  completeOnboarding();
                   Get.offAll(() => const LoginScreen());
                 } else {
                   pageController.nextPage(

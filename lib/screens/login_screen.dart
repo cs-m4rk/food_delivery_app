@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/animations/fade_animation.dart';
 import 'package:food_delivery_app/app_image_path.dart';
@@ -101,7 +102,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const DividerRow(),
                 const SizedBox(height: 25),
                 SecondaryButton(
-                  onTap: () {},
+                  onTap: () async {
+                    loginwithGoogle();
+                  },
                   text: 'Sign in with Google',
                   borderRadius: 20,
                   height: 60,
@@ -173,6 +176,22 @@ class _LoginScreenState extends State<LoginScreen> {
       return 'Password should be at least 6 characters';
     }
     return null;
+  }
+
+  Future<void> loginwithGoogle() async {
+    final authService = AuthService();
+
+    try {
+      await authService.signInWithGoogle();
+      setState(() {
+        _errorMessage = null;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage =
+            'Login failed. Please check your credentials and try again';
+      });
+    }
   }
 
   Future<void> login() async {
