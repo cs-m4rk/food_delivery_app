@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
             defaultTransition: Transition.fadeIn,
             locale: const Locale('en_US'),
             onGenerateRoute: AppRoutes.generateRoute,
-            home: const AuthGate(),
+            home: const OnboardingCheck(),
             theme: ThemeData(
               fontFamily: 'Poppins',
             ),

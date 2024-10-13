@@ -5,14 +5,16 @@ import 'package:food_delivery_app/routes/app_routes.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthGate extends StatefulWidget {
-  const AuthGate({super.key});
+class OnboardingCheck extends StatefulWidget {
+  const OnboardingCheck({super.key});
+
   @override
-  State<AuthGate> createState() => _AuthGateState();
+  State<OnboardingCheck> createState() => _OnboardingCheckState();
 }
 
-class _AuthGateState extends State<AuthGate> {
+class _OnboardingCheckState extends State<OnboardingCheck> {
   bool _isOnboardingComplete = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -24,13 +26,33 @@ class _AuthGateState extends State<AuthGate> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _isOnboardingComplete = prefs.getBool('onboardingComplete') ?? false;
-      // Loading finished
+      _isLoading = false;
     });
+  }
 
-    if (!_isOnboardingComplete) {
-      Navigator.pushNamed(context, AppRoutes.onboarding);
+  @override
+  Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    // If onboarding is complete, proceed to the AuthGate
+    if (_isOnboardingComplete) {
+      return const AuthGate();
+    } else {
+      // If onboarding is not complete, navigate to the onboarding screen
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
+      });
+      return const SizedBox(); // Return an empty widget while navigating
     }
   }
+}
+
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +60,11 @@ class _AuthGateState extends State<AuthGate> {
       body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          // user is logged in
-
+          // User is logged in
           if (snapshot.hasData) {
             return const BottomNavbar();
           }
-          // user is not logged in
+          // User is not logged in
           else {
             return const LoginScreen();
           }
