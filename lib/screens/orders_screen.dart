@@ -18,11 +18,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Database db = Database();
   final userId = AuthService().getCurrentUser()!.uid;
 
+  var txtStyle = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Orders'),
+        title: Text(
+          'Orders',
+          style: txtStyle,
+        ),
       ),
       body: FutureBuilder<OrderDetails?>(
         future: db.getOrderDetails(userId),

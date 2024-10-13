@@ -53,7 +53,7 @@ class _FoodScreenState extends State<FoodScreen> {
               children: [
                 SizedBox(
                   width: double.infinity,
-                  height: 450,
+                  height: 300,
                   child: Image.asset(
                     widget.food.imagePath,
                     fit: BoxFit.cover,
@@ -83,6 +83,7 @@ class _FoodScreenState extends State<FoodScreen> {
                       ),
                       Text(
                         widget.food.description,
+                        textAlign: TextAlign.justify,
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w200,
@@ -91,7 +92,6 @@ class _FoodScreenState extends State<FoodScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      const Divider(),
                       const SizedBox(
                         height: 10,
                       ),
@@ -116,7 +116,6 @@ class _FoodScreenState extends State<FoodScreen> {
                         child: ListView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.zero,
-                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: widget.food.availableAddons.length,
                           itemBuilder: (context, index) {
                             // get individual addon

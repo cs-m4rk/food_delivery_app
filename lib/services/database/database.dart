@@ -59,20 +59,20 @@ class Database {
   }
 
   // fetch all customer details from Firestore according to their document id
-Future<List<CustomerDetails>> getCustomerDetails(String userId) async {
-  // Fetch customer details where the userId matches the provided userId
-  QuerySnapshot snapshot = await customerDetails
-      .where('userId', isEqualTo: userId) // Apply the filter
-      .get();
-
-  return snapshot.docs.map((doc) {
-    // Include the document ID in the map passed to fromMap
-    return CustomerDetails.fromMap({
-      'documentId': doc.id, // Capture the document ID
-      ...doc.data() as Map<String, dynamic>, // Spread the other fields
+  Stream<List<CustomerDetails>> getCustomerDetails(String userId) {
+    // Listen for real-time updates where the userId matches
+    return customerDetails
+        .where('userId', isEqualTo: userId)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return CustomerDetails.fromMap({
+          'documentId': doc.id,
+          ...doc.data() as Map<String, dynamic>,
+        });
+      }).toList();
     });
-  }).toList();
-}
+  }
 
   // edit and update customer details in Firestore
   Future<void> updateCustomerDetails(

@@ -16,6 +16,11 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   List<bool> _checkedItems = [];
 
+  var txtStyle = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Consumer<Restaurant>(
@@ -30,9 +35,11 @@ class _CartScreenState extends State<CartScreen> {
         return Scaffold(
           backgroundColor: AppColors.kBackground,
           appBar: AppBar(
-            title: const Text('Cart'),
+            title: Text(
+              'Cart',
+              style: txtStyle,
+            ),
             backgroundColor: AppColors.kBackground,
-            centerTitle: true,
             actions: [
               IconButton(
                 onPressed: () {
@@ -62,7 +69,10 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   );
                 },
-                icon: const Icon(Icons.delete),
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
               ),
             ],
           ),

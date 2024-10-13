@@ -75,8 +75,9 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Quickbite', style: txtStyle),
+        title: Text('Moodeng Bite', style: txtStyle),
         backgroundColor: AppColors.kBackground,
+        automaticallyImplyLeading: false,
       ),
       backgroundColor: AppColors.kBackground,
       body: NestedScrollView(

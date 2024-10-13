@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: GetMaterialApp(
-            title: 'Foochi Food App',
+            title: 'MooDeng Bite',
             debugShowCheckedModeBanner: false,
             scrollBehavior: const ScrollBehavior()
                 .copyWith(physics: const BouncingScrollPhysics()),

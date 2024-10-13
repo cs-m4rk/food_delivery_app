@@ -31,6 +31,13 @@ class _MyCartTileState extends State<MyCartTile> {
         decoration: BoxDecoration(
           color: AppColors.kWhiteColor,
           borderRadius: BorderRadius.circular(8),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              offset: Offset(0, 2),
+              blurRadius: 4,
+            ),
+          ],
         ),
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
@@ -70,49 +77,67 @@ class _MyCartTileState extends State<MyCartTile> {
                   const SizedBox(
                     width: 10,
                   ),
-                  // Name and price
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(widget.cartItem.food.name),
-                      Text("₱${widget.cartItem.food.price.toString()}"),
 
-                      // Increment or decrement quantity
-                      Padding(
-                        padding: const EdgeInsets.only(top: 7),
-                        child: widget.showControls
-                            ? QuantitySelector(
-                                quantity: widget.cartItem.quantity,
-                                food: widget.cartItem.food,
-                                onIncrement: () {
-                                  restaurant.addToCart(
-                                    widget.cartItem.food,
-                                    widget.cartItem.selectedAddons,
-                                  );
-                                },
-                                onDecrement: () {
-                                  restaurant.removeFromCart(widget.cartItem);
-                                },
-                              )
-                            : Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Text('${widget.cartItem.quantity}',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.cartItem.food.name,
+                          softWrap: true,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text("₱${widget.cartItem.food.price.toString()}"),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        // Increment or decrement quantity
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 7),
+                              child: widget.showControls
+                                  ? QuantitySelector(
+                                      quantity: widget.cartItem.quantity,
+                                      food: widget.cartItem.food,
+                                      onIncrement: () {
+                                        restaurant.addToCart(
+                                          widget.cartItem.food,
+                                          widget.cartItem.selectedAddons,
+                                        );
+                                      },
+                                      onDecrement: () {
+                                        restaurant
+                                            .removeFromCart(widget.cartItem);
+                                      },
+                                    )
+                                  : Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child:
+                                            Text('${widget.cartItem.quantity}',
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                )),
+                                      ),
+                                    ),
+                            ),
+                            Spacer(),
+                            Text(
+                              "₱${widget.cartItem.totalPrice.toStringAsFixed(2)}",
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
                               ),
-                      ),
-                    ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                  const Spacer(),
-                  Text("₱${widget.cartItem.totalPrice.toStringAsFixed(2)}",
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      )),
                 ],
               ),
             ),

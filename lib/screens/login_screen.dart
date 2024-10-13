@@ -32,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  @override
   void dispose() {
     _passwordController.dispose();
     super.dispose();
@@ -41,111 +42,151 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kBackground,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
-        child: Form(
-          key: _formKey,
-          child: FadeAnimation(
-            delay: 1,
-            child: Column(
-              children: [
-                Center(
-                  child: Image.asset(AppImagePath.kAppLogo),
-                ),
-                const SizedBox(height: 30),
-                PrimaryTextformfield(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  labelText: 'Email',
-                  prefixIcon: const Icon(
-                    Icons.email,
-                    color: AppColors.kPrimary,
-                  ),
-                  validator: validateEmail,
-                ),
-                const SizedBox(height: 20),
-                PrimaryTextformfield(
-                  labelText: 'Password',
-                  controller: _passwordController,
-                  obscureText: _isObscure,
-                  suffixIcon: _isPasswordFieldEmpty
-                      ? null
-                      : IconButton(
-                          icon: Icon(_isObscure
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              _isObscure = !_isObscure;
-                            });
-                          },
-                        ),
-                  prefixIcon: const Icon(
-                    Icons.lock,
-                    color: AppColors.kPrimary,
-                  ),
-                  validator: validatePassword,
-                ),
-                if (_errorMessage != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      _errorMessage!,
-                      style: const TextStyle(
-                        color: Colors.red,
-                        fontSize: 12,
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+          child: Form(
+            key: _formKey,
+            child: FadeAnimation(
+              delay: 1,
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(60),
+                    child: SizedBox(
+                      width: 90,
+                      height: 90,
+                      child: Image.asset(
+                        AppImagePath.kAppLogo,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                const SizedBox(height: 30),
-                const DividerRow(),
-                const SizedBox(height: 25),
-                SecondaryButton(
-                  onTap: () {},
-                  text: 'Sign in with Google',
-                  borderRadius: 20,
-                  height: 60,
-                  width: double.infinity,
-                  bgColor: AppColors.kWhiteColor,
-                  icons: AppImagePath.kGoogleLogo,
-                  iconHeight: 36,
-                  iconWidth: 36,
-                  fontSize: 16,
-                ),
-                const SizedBox(
-                  height: 16,
-                  width: 20,
-                ),
-                const SizedBox(height: 30),
-                PrimaryButton(
-                    onTap: () async {
-                      if (_formKey.currentState!.validate()) {
-                        await login();
-                      }
-                    },
-                    title: 'Sign In'),
-                const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Don't have an account?",
-                        style: TextStyle(
-                          fontSize: 14,
-                        )),
-                    const SizedBox(
-                      width: 10,
+                  const SizedBox(height: 50),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Welcome to ',
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Moodeng Bite',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.kPrimary,
+                          ),
+                        ),
+                        TextSpan(
+                          text: ', where every bite is a delight!',
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                    PrimaryTextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, AppRoutes.register);
+                  ),
+                  const SizedBox(height: 50),
+                  PrimaryTextformfield(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    labelText: 'Email',
+                    prefixIcon: const Icon(
+                      Icons.email,
+                      color: AppColors.kPrimary,
+                    ),
+                    validator: validateEmail,
+                  ),
+                  const SizedBox(height: 20),
+                  PrimaryTextformfield(
+                    labelText: 'Password',
+                    controller: _passwordController,
+                    obscureText: _isObscure,
+                    suffixIcon: _isPasswordFieldEmpty
+                        ? null
+                        : IconButton(
+                            icon: Icon(_isObscure
+                                ? Icons.visibility_off
+                                : Icons.visibility),
+                            onPressed: () {
+                              setState(() {
+                                _isObscure = !_isObscure;
+                              });
+                            },
+                          ),
+                    prefixIcon: const Icon(
+                      Icons.lock,
+                      color: AppColors.kPrimary,
+                    ),
+                    validator: validatePassword,
+                  ),
+                  if (_errorMessage != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        _errorMessage!,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 25),
+                  const DividerRow(),
+                  const SizedBox(height: 25),
+                  SecondaryButton(
+                    onTap: () {},
+                    text: 'Sign in with Google',
+                    borderRadius: 20,
+                    height: 60,
+                    width: double.infinity,
+                    bgColor: AppColors.kWhiteColor,
+                    icons: AppImagePath.kGoogleLogo,
+                    iconHeight: 36,
+                    iconWidth: 36,
+                    fontSize: 16,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                    width: 20,
+                  ),
+                  const SizedBox(height: 25),
+                  PrimaryButton(
+                      onTap: () async {
+                        if (_formKey.currentState!.validate()) {
+                          await login();
+                        }
                       },
-                      title: 'Sign Up',
-                      fontSize: 14,
-                      textColor: AppColors.kPrimary,
-                    ),
-                  ],
-                ),
-              ],
+                      title: 'Sign In'),
+                  const SizedBox(height: 25),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account?",
+                          style: TextStyle(
+                            fontSize: 14,
+                          )),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      PrimaryTextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRoutes.register);
+                        },
+                        title: 'Sign Up',
+                        fontSize: 14,
+                        textColor: AppColors.kPrimary,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
