@@ -7,8 +7,6 @@ import 'package:food_delivery_app/screens/edit_address_screen.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
 import 'package:food_delivery_app/screens/onboarding_screen.dart';
 import 'package:food_delivery_app/screens/new_address_screen.dart';
-import 'package:food_delivery_app/screens/payment_screen.dart';
-import 'package:food_delivery_app/screens/orders_screen.dart';
 import 'package:food_delivery_app/screens/register_screen.dart';
 import 'package:food_delivery_app/screens/update_profile_screen.dart';
 
