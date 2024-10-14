@@ -136,6 +136,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           final cartItem = widget.selectedItems[index];
                           return MyCartTile(
                             cartItem: cartItem,
+                            showRemoveButton: false,
                             isChecked: false,
                             onChanged: (value) {},
                             showControls: false,
@@ -247,9 +248,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => OrdersScreen(
-                            selectedItems: widget.selectedItems,
-                          ),
+                          builder: (context) => OrdersScreen(),
                         ),
                       );
                     }

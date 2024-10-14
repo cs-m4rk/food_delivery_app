@@ -6,6 +6,7 @@ import 'package:food_delivery_app/models/user.dart';
 import 'package:food_delivery_app/routes/app_routes.dart';
 import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/services/database/database.dart';
+import 'package:food_delivery_app/themes/app_colors.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -21,14 +22,16 @@ class ProfileScreen extends StatelessWidget {
     Database db = Database();
 
     return Scaffold(
+      backgroundColor: AppColors.kBackground,
       appBar: AppBar(
+        backgroundColor: AppColors.kBackground,
         title: Text(
           'Profile',
           style: title,
         ),
       ),
-      body: FutureBuilder<User?>(
-        future: db.getUserDetails(userId),
+      body: StreamBuilder<User?>(
+        stream: db.getUserDetails(userId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

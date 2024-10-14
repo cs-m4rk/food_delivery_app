@@ -33,6 +33,7 @@ class _AddressScreenState extends State<AddressScreen> {
     return Scaffold(
       backgroundColor: AppColors.kBackground,
       appBar: AppBar(
+        backgroundColor: AppColors.kBackground,
         title: const Text('Address Selection'),
       ),
       body: StreamBuilder<List<CustomerDetails>>(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/components/export_components/login_components.dart';
 import 'package:food_delivery_app/components/quantity_selector.dart';
 import 'package:food_delivery_app/models/cart_item.dart';
 import 'package:food_delivery_app/models/restaurant.dart';
@@ -9,15 +10,19 @@ class MyCartTile extends StatefulWidget {
   const MyCartTile({
     super.key,
     required this.cartItem,
-    required this.isChecked,
-    required this.onChanged,
+    this.onTap,
+    this.isChecked,
+    this.onChanged,
     this.showControls = true,
+    this.showRemoveButton = true,
   });
 
-  final CartItem cartItem;  
-  final bool isChecked;
-  final ValueChanged<bool?> onChanged;
+  final CartItem cartItem;
+  final bool? isChecked;
+  final ValueChanged<bool?>? onChanged;
   final bool showControls;
+  final bool showRemoveButton; // New parameter
+  final InkWell? onTap;
 
   @override
   State<MyCartTile> createState() => _MyCartTileState();
@@ -49,16 +54,29 @@ class _MyCartTileState extends State<MyCartTile> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Checkbox
-
+                  // Conditionally display the checkbox
                   if (widget.showControls)
                     Padding(
-                      padding: const EdgeInsets.only(
-                          top: 16,
-                          right: 5), // Add vertical padding, no horizontal
+                      padding: const EdgeInsets.only(top: 16, right: 5),
                       child: Checkbox(
-                        value: widget.isChecked,
-                        onChanged: widget.onChanged,
+                        value: widget.isChecked ?? false,
+                        onChanged: widget.onChanged ?? (value) {},
+                      ),
+                    ),
+
+                  // Conditionally display the remove button
+                  if (widget.showRemoveButton)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16, right: 5),
+                      child: IconButton(
+                        onPressed: () {
+                          restaurant.clearCart();
+                        },
+                        icon: const Icon(
+                          Icons.remove_circle_outline,
+                          color: Colors.red,
+                          semanticLabel: 'Cancel',
+                        ),
                       ),
                     ),
 
@@ -91,7 +109,7 @@ class _MyCartTileState extends State<MyCartTile> {
                         ),
                         Text("₱${widget.cartItem.food.price.toString()}"),
                         const SizedBox(
-                          height: 5,
+                          height: 3,
                         ),
                         // Increment or decrement quantity
                         Row(
@@ -117,7 +135,7 @@ class _MyCartTileState extends State<MyCartTile> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child:
-                                            Text('${widget.cartItem.quantity}',
+                                            Text('${widget.cartItem.quantity}x',
                                                 style: const TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.bold,
@@ -125,7 +143,7 @@ class _MyCartTileState extends State<MyCartTile> {
                                       ),
                                     ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Text(
                               "₱${widget.cartItem.totalPrice.toStringAsFixed(2)}",
                               style: const TextStyle(
@@ -160,7 +178,7 @@ class _MyCartTileState extends State<MyCartTile> {
                                 Text(' (₱${addon.price}) '),
                               ],
                             ),
-                            shape: StadiumBorder(),
+                            shape: const StadiumBorder(),
                             onSelected: (value) {},
                             backgroundColor: Colors.grey.shade100,
                             labelStyle: const TextStyle(

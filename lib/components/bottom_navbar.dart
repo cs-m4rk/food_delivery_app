@@ -48,9 +48,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
         children: const [
           HomeScreen(),
           CartScreen(),
-          OrdersScreen(
-            selectedItems: [],
-          ),
+          OrdersScreen(),
           ProfileScreen(),
         ],
       ),

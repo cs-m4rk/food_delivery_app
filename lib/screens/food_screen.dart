@@ -47,6 +47,7 @@ class _FoodScreenState extends State<FoodScreen> {
     return Stack(
       children: [
         Scaffold(
+          backgroundColor: AppColors.kBackground,
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

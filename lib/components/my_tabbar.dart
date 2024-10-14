@@ -20,7 +20,6 @@ class MyTabbar extends StatelessWidget {
     return SingleChildScrollView(
       child: Container(
         child: TabBar(
-          dividerColor: AppColors.kBackground,
           controller: tabController,
           tabs: _buildCategoryTabs(),
         ),

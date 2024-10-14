@@ -8,6 +8,7 @@ import 'package:food_delivery_app/models/address.dart';
 import 'package:food_delivery_app/models/customer_details.dart';
 import 'package:food_delivery_app/services/auth/auth_service.dart';
 import 'package:food_delivery_app/services/database/database.dart';
+import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:get/get.dart';
 
 class EditAddressScreen extends StatefulWidget {
@@ -121,7 +122,9 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
     }
 
     return Scaffold(
+      backgroundColor: AppColors.kBackground,
       appBar: AppBar(
+        backgroundColor: AppColors.kBackground,
         title: const Text('Edit Address'),
       ),
       body: SingleChildScrollView(

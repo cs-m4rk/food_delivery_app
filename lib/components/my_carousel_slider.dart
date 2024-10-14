@@ -80,7 +80,7 @@ class TaskCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: SizedBox(
-          height: 160,
+          height: 100,
           child: Image.asset(
             imagePath,
             fit: BoxFit.cover,

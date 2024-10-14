@@ -139,21 +139,20 @@ class Database {
   }
 
   // fetch user details from Firestore
-  Future<User?> getUserDetails(String userId) async {
-    try {
-      final docSnapshot = await userDetails.doc(userId).get();
+Stream<User?> getUserDetails(String userId) async* {
+  try {
+    final docSnapshot = await userDetails.doc(userId).get();
 
-      if (docSnapshot.exists) {
-        final userData = docSnapshot.data() as Map<String, dynamic>;
-        return User.fromMap(userData);
-      } else {
-        return null;
-      }
-    } catch (e) {
-      throw Exception(e);
+    if (docSnapshot.exists) {
+      final userData = docSnapshot.data() as Map<String, dynamic>;
+      yield User.fromMap(userData);
+    } else {
+      yield null;
     }
+  } catch (e) {
+    throw Exception(e);
   }
-
+}
   // update user details in Firestore
   Future<void> updateUserDetails(User updatedUserDetails, String userId) async {
     try {
