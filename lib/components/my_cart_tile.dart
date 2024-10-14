@@ -14,7 +14,7 @@ class MyCartTile extends StatefulWidget {
     this.showControls = true,
   });
 
-  final CartItem cartItem;
+  final CartItem cartItem;  
   final bool isChecked;
   final ValueChanged<bool?> onChanged;
   final bool showControls;

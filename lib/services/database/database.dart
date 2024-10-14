@@ -82,24 +82,24 @@ class Database {
   }
 
   // save cart detaits to Firestore
-  Future<void> saveCartDetails(String userId, List<CartItem> cartItems) async {
-    List<Map<String, dynamic>> cart = cartItems.map((cartItem) {
-      return {
-        'food': cartItem.food.name,
-        'quantity': cartItem.quantity,
-        'totalPrice': cartItem.totalPrice,
-        'addons': cartItem.selectedAddons
-            .map((addon) => {
-                  'name': addon.name,
-                  'price': addon.price,
-                })
-            .toList(),
-      };
-    }).toList();
+  Future<void> saveCartDetails(String userId, CartItem cartItem) async {
+    // Get the reference to the user's cart subcollection
+    CollectionReference cartCollection =
+        cartDetails.doc(userId).collection('cart');
 
-    await cartDetails.doc(userId).set({
-      'userId': userId,
-      'cart': cart,
+    // Add the cart item to the collection
+    await cartCollection.add(cartItem.toMap());
+  }
+
+  Stream<List<CartItem>> getCartDetails(String userId) {
+    CollectionReference cartCollection =
+        cartDetails.doc(userId).collection('cart');
+
+    // Use snapshots() to listen for real-time updates
+    return cartCollection.snapshots().map((querySnapshot) {
+      return querySnapshot.docs.map((doc) {
+        return CartItem.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
     });
   }
 
@@ -127,37 +127,6 @@ class Database {
   // remove all the cart from the Firestore
   Future<void> removeAllCartDetails(String userId) async {
     await cartDetails.doc(userId).delete();
-  }
-
-  // fetch cart details from Firestore
-  Future<List<Map<String, dynamic>>> getCartDetails(String userId) async {
-    // Retrieve the document for the given user ID
-    DocumentSnapshot snapshot = await cartDetails.doc(userId).get();
-
-    // Check if the document exists
-    if (snapshot.exists) {
-      // Extract data from the snapshot
-      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-
-      // Retrieve the cart list from the data
-      List<dynamic> cartData = data['cart'] as List<dynamic>? ?? [];
-
-      // Convert to a list of maps
-      List<Map<String, dynamic>> cartItems = [];
-
-      for (var item in cartData) {
-        if (item is Map<String, dynamic>) {
-          cartItems.add(item);
-        } else {
-          print("Unexpected item in cart: $item");
-        }
-      }
-
-      return cartItems;
-    } else {
-      // Return an empty list if the document does not exist
-      return [];
-    }
   }
 
   // save user details to Firestore

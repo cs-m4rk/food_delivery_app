@@ -329,34 +329,36 @@ class Restaurant extends ChangeNotifier {
 
   // Add to cart
   void addToCart(Food food, List<Addon> selectedAddons) async {
-    // see if there is a cart item already with the same food and selected addons
+    // Check if there is a cart item already with the same food and selected addons
     CartItem? cartItem = _cart.firstWhereOrNull((item) {
-      // check if the food items are the same
+      // Check if the food items are the same
       bool isSameFood = item.food == food;
-
-      // check if the list of selected addons are the same
+      // Check if the list of selected addons are the same
       bool isSameAddons =
           ListEquality().equals(item.selectedAddons, selectedAddons);
 
       return isSameAddons && isSameFood;
     });
 
-    // if item already exist, increase it's quantity
+    // If item already exists, increase its quantity
     if (cartItem != null) {
       cartItem.quantity++;
     } else {
-      // if item does not exist, add it to the new cart
-      _cart.add(
-        CartItem(food: food, selectedAddons: selectedAddons),
-      );
+      // If item does not exist, add it to the cart
+      cartItem = CartItem(food: food, selectedAddons: selectedAddons);
+      _cart.add(cartItem);
     }
 
     final user = AuthService().getCurrentUser();
+    if (user == null) {
+      throw Exception('User not logged in');
+    }
 
     try {
-      await _database.saveCartDetails(user!.uid, _cart);
+      // Save the cart item (existing or newly created)
+      await _database.saveCartDetails(user.uid, cartItem);
     } catch (e) {
-      throw Exception('Failed to save cart details');
+      throw Exception('Failed to save cart details: $e');
     }
 
     notifyListeners();

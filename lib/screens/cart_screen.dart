@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/components/export_components/login_components.dart';
 import 'package:food_delivery_app/components/my_cart_tile.dart';
+import 'package:food_delivery_app/models/cart_item.dart';
 import 'package:food_delivery_app/models/restaurant.dart';
 import 'package:food_delivery_app/screens/payment_screen.dart';
+import 'package:food_delivery_app/services/auth/auth_service.dart';
+import 'package:food_delivery_app/services/database/database.dart';
 import 'package:food_delivery_app/themes/app_colors.dart';
 import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -20,6 +24,9 @@ class _CartScreenState extends State<CartScreen> {
     fontSize: 24,
     fontWeight: FontWeight.bold,
   );
+
+  Database db = Database();
+  final userId = AuthService().getCurrentUser()!.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -76,69 +83,80 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ],
           ),
-          body: Column(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    userCart.isEmpty
-                        ? const Expanded(
-                            child: Center(child: Text("Cart is empty")))
-                        : Expanded(
-                            child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                final cartItem = userCart[index];
-                                return MyCartTile(
-                                  cartItem: cartItem,
-                                  isChecked: _checkedItems[index],
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      _checkedItems[index] = value ?? false;
-                                    });
+          body: StreamBuilder<List<CartItem>>(
+            stream: db.getCartDetails(userId), // Fetch cart items directly
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              }
+
+              final userCart = snapshot.data ?? [];
+
+              return Column(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        userCart.isEmpty
+                            ? const Expanded(
+                                child: Center(child: Text("Cart is empty")))
+                            : Expanded(
+                                child: ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    final cartItem = userCart[index];
+                                    return MyCartTile(
+                                      cartItem: cartItem,
+                                      isChecked: _checkedItems[index],
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          _checkedItems[index] = value ?? false;
+                                        });
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                              itemCount: userCart.length,
-                            ),
-                          ),
-                  ],
-                ),
-              ),
-              userCart.isNotEmpty
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 25),
-                      child: PrimaryButton(
-                        onTap: () {
-                          final selectedItems = userCart
-                              .asMap()
-                              .entries
-                              .where((entry) => _checkedItems[entry.key])
-                              .map((entry) => entry.value)
-                              .toList();
-                          if (selectedItems.isNotEmpty) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PaymentScreen(
-                                  selectedItems: selectedItems,
+                                  itemCount: userCart.length,
                                 ),
                               ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content:
-                                    Text('Please select items to checkout'),
-                              ),
-                            );
-                          }
-                        },
-                        title: 'Checkout',
-                      ),
-                    )
-                  : const SizedBox(),
-            ],
+                      ],
+                    ),
+                  ),
+                  userCart.isNotEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 25),
+                          child: PrimaryButton(
+                            onTap: () {
+                              final selectedItems = userCart
+                                  .asMap()
+                                  .entries
+                                  .where((entry) => _checkedItems[entry.key])
+                                  .map((entry) => entry.value)
+                                  .toList();
+                              if (selectedItems.isNotEmpty) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PaymentScreen(
+                                      selectedItems: selectedItems,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                Get.snackbar(
+                                  'Message',
+                                  'Please select items to checkout',
+                                );
+                              }
+                            },
+                            title: 'Checkout',
+                          ),
+                        )
+                      : const SizedBox(),
+                ],
+              );
+            },
           ),
         );
       },

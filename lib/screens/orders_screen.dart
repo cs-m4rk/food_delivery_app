@@ -40,7 +40,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data == null) {
-            return Center(child: Text('No user data found.'));
+            return Center(child: Text('No orders yet'));
           }
 
           final orderDetails = snapshot.data!;
